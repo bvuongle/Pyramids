@@ -14,13 +14,13 @@ def noSolutionCheck(view):
     return cnt1 <= 1 and cntN <= 1
 
 
-def createPyramidMatrix():
+def createPyramidMatrix(N):
     baseList = list(range(1, N+1))
     pyramidMatrix = []
     for _ in range(N):
         rowList = []
         for _ in range(N):
-            rowList.append(baseList)
+            rowList.append(baseList.copy())
         pyramidMatrix.append(rowList)
     return pyramidMatrix
 
@@ -29,22 +29,20 @@ def delValueColLoop(row, col, value):
     # Set cell value and delete it from other cell list in the same column
     pyramidMatrix[row][col] = [value]
     for otrCol in range(N):
-        if otrCol != col:
-            pyramidMatrix[row][otrCol] = pyramidMatrix[row][otrCol][:value-1] \
-                                        + pyramidMatrix[row][otrCol][value:]
+        if otrCol != col and value in pyramidMatrix[row][otrCol]:
+            pyramidMatrix[row][otrCol].remove(value)
 
 
 def delValueRowLoop(row, col, value):
     # Set cell value and delete it from other cell list in the same row
     pyramidMatrix[row][col] = [value]
     for otrRow in range(N):
-        if otrRow != row:
-            pyramidMatrix[otrRow][col] = pyramidMatrix[otrRow][col][:value-1] \
-                                        + pyramidMatrix[otrRow][col][value:]
+        if otrRow != row and value in pyramidMatrix[otrRow][col]:
+            pyramidMatrix[otrRow][col].remove(value)
 
 
 def fromTop(topView):
-    # Remember that you should loop col from 0 -> N-1
+    # Remember that you should loop col from 0 -> N-1, row = 0
     if not noSolutionCheck(topView):
         raise noSolutionError
     for col, viewValue in enumerate(topView):
@@ -54,10 +52,12 @@ def fromTop(topView):
         elif viewValue == N:
             for row in range(N):
                 delValueColLoop(row, col, row+1)
+        else:
+            pyramidMatrix[0][col] = pyramidMatrix[0][col][:N-viewValue+1]
 
 
 def fromBot(botView):
-    # Remember that you should loop row from N-1 -> 0
+    # Remember that you should loop col from N-1 -> 0, row = N-1
     if not noSolutionCheck(botView):
         raise noSolutionError
     for col, viewValue in enumerate(botView):
@@ -67,10 +67,12 @@ def fromBot(botView):
         elif viewValue == N:
             for row in range(N):
                 delValueColLoop(row, col, N-row)
+        else:
+            pyramidMatrix[N-1][col] = pyramidMatrix[N-1][col][:N-viewValue+1]
 
 
 def fromRight(rightView):
-    # Remember that you should loop row from 0 -> N-1
+    # Remember that you should loop row from 0 -> N-1, col = 0
     if not noSolutionCheck(rightView):
         raise noSolutionError
     for row, viewValue in enumerate(rightView):
@@ -80,10 +82,12 @@ def fromRight(rightView):
         elif viewValue == N:
             for col in range(N):
                 delValueRowLoop(row, col, col+1)
+        else:
+            pyramidMatrix[row][0] = pyramidMatrix[row][0][:N-viewValue+1]
 
 
 def fromLeft(leftView):
-    # Remember that you should loop row from N-1 -> 0
+    # Remember that you should loop row from N-1 -> 0, col = N-1
     if not noSolutionCheck(leftView):
         raise noSolutionError
     for row, viewValue in enumerate(leftView):
@@ -93,6 +97,8 @@ def fromLeft(leftView):
         elif viewValue == N:
             for col in range(N):
                 delValueRowLoop(row, col, N-col)
+        else:
+            pyramidMatrix[row][N-1] = pyramidMatrix[row][N-1][:N-viewValue+1]
 
 
 def reduceConfig(view):
@@ -109,8 +115,8 @@ def displayPyramidMatrix():
         for cell in row:
             substr = "".join(str(value) for value in cell)
             rowList.append(substr)
-        string = "\t\t".join(rowList)
-        print(string, "\n")
+        string = "\t\t\t".join(rowList)
+        print(string, end="\n")
 
 
 def ultimateBacktracking():
@@ -124,7 +130,7 @@ def sudokuBase():
 def main():
     global N, pyramidMatrix
     N = 4
-    pyramidMatrix = createPyramidMatrix()
+    pyramidMatrix = createPyramidMatrix(4)
     view = [
             [3, 0, 1, 0],
             [0, 0, 0, 0],
