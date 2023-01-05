@@ -1,5 +1,8 @@
+import copy
+
+
 class noSolutionError(Exception):
-    def __init__(self) -> None:
+    def __init__(self):
         super().__init__("This problem have no solution")
 
 
@@ -20,7 +23,7 @@ def createPyramidMatrix(N):
     for _ in range(N):
         rowList = []
         for _ in range(N):
-            rowList.append(baseList.copy())
+            rowList.append(copy.deepcopy(baseList))
         pyramidMatrix.append(rowList)
     return pyramidMatrix
 
@@ -54,6 +57,9 @@ def fromTop(topView):
                 delValueColLoop(row, col, row+1)
         else:
             pyramidMatrix[0][col] = pyramidMatrix[0][col][:N-viewValue+1]
+            for otrRow in range(1, viewValue):
+                if N in pyramidMatrix[otrRow][col]:
+                    pyramidMatrix[otrRow][col].remove(N)
 
 
 def fromBot(botView):
@@ -69,6 +75,9 @@ def fromBot(botView):
                 delValueColLoop(row, col, N-row)
         else:
             pyramidMatrix[N-1][col] = pyramidMatrix[N-1][col][:N-viewValue+1]
+            for otrRow in range(N-viewValue+1, N-1):
+                if N in pyramidMatrix[otrRow][col]:
+                    pyramidMatrix[otrRow][col].remove(N)
 
 
 def fromRight(rightView):
@@ -76,6 +85,8 @@ def fromRight(rightView):
     if not noSolutionCheck(rightView):
         raise noSolutionError
     for row, viewValue in enumerate(rightView):
+        if viewValue == 0:
+            continue
         if viewValue == 1:
             delValueRowLoop(row, 0, N)
             delValueColLoop(row, 0, N)
@@ -84,6 +95,9 @@ def fromRight(rightView):
                 delValueRowLoop(row, col, col+1)
         else:
             pyramidMatrix[row][0] = pyramidMatrix[row][0][:N-viewValue+1]
+            for otrCol in range(1, viewValue):
+                if N in pyramidMatrix[row][otrCol]:
+                    pyramidMatrix[row][otrCol].remove(N)
 
 
 def fromLeft(leftView):
@@ -99,6 +113,17 @@ def fromLeft(leftView):
                 delValueRowLoop(row, col, N-col)
         else:
             pyramidMatrix[row][N-1] = pyramidMatrix[row][N-1][:N-viewValue+1]
+            for otrCol in range(N-viewValue+1, N-1):
+                if N in pyramidMatrix[row][otrCol]:
+                    pyramidMatrix[row][otrCol].remove(N)
+
+
+def lastReduce():
+    for row in range(N):
+        for col in range(N):
+            if len(pyramidMatrix[row][col]) == 1:
+                delValueColLoop(row, col, pyramidMatrix[row][col][0])
+                delValueRowLoop(row, col, pyramidMatrix[row][col][0])
 
 
 def reduceConfig(view):
@@ -107,6 +132,7 @@ def reduceConfig(view):
     fromBot(view[1])
     fromRight(view[2])
     fromLeft(view[3])
+    lastReduce()
 
 
 def displayPyramidMatrix():
@@ -119,23 +145,15 @@ def displayPyramidMatrix():
         print(string, end="\n")
 
 
-def ultimateBacktracking():
-    pass
-
-
-def sudokuBase():
-    pass
-
-
 def main():
     global N, pyramidMatrix
-    N = 4
-    pyramidMatrix = createPyramidMatrix(4)
+    N = 5
+    pyramidMatrix = createPyramidMatrix(5)
     view = [
-            [3, 0, 1, 0],
-            [0, 0, 0, 0],
-            [0, 0, 4, 0],
-            [0, 3, 0, 0]
+        [0, 0, 3, 0, 1],
+        [0, 0, 0, 3, 4],
+        [4, 4, 0, 1, 0],
+        [0, 0, 3, 0, 0]
     ]
     reduceConfig(view)
     displayPyramidMatrix()
