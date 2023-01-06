@@ -1,11 +1,6 @@
-def createAnswerPyramidMatrix(N):
-    answerPyramidMatrix = []
-    for _ in range(N):
-        rowList = []
-        for _ in range(N):
-            rowList.append(0)
-        answerPyramidMatrix.append(rowList)
-    return answerPyramidMatrix
+from pyramidsMap import pyrMap
+from visiblePyramids import hintsData
+from copy import deepcopy
 
 
 def getRow(matrix, row):
@@ -27,69 +22,53 @@ def num_visible_pyramids(arr):
     return cnt
 
 
-def checkValidView():
-    for it in range(0, N):
-        viewTop = view[0][it]
-        viewBot = view[1][it]
+def checkValidView(curPyrMap: pyrMap, hints: hintsData):
+    for it in range(0, hints.N):
+        viewTop = hints.topView[it]
+        viewBot = hints.botView[it]
         col = it
         tmp = []
-        for row in range(0, N):
-            tmp.append(answerPyramidMatrix[row][col])
+        for row in range(0, curPyrMap.size):
+            tmp.append(curPyrMap.map[row][col])
         visible_pyr_top = num_visible_pyramids(tmp)
         visible_pyr_bot = num_visible_pyramids(tmp[::-1])
-        if (visible_pyr_top != viewTop and viewTop != 0) or (visible_pyr_bot != viewBot and viewBot != 0):
+        if (visible_pyr_top != viewTop and viewTop != 0) or \
+                (visible_pyr_bot != viewBot and viewBot != 0):
             return False
-        else: 
+        else:
             continue
-    for it in range(0, N):
-        viewRight = view[2][it]
-        viewLeft = view[3][it]
+    for it in range(0, hints.N):
+        viewRight = hints.rightView[it]
+        viewLeft = hints.leftView[it]
         row = it
         tmp = []
-        for col in range(0, N):
-            tmp.append(answerPyramidMatrix[row][col])
+        for col in range(0, curPyrMap.size):
+            tmp.append(curPyrMap.map[row][col])
         visible_pyr_right = num_visible_pyramids(tmp)
         visible_pyr_left = num_visible_pyramids(tmp[::-1])
-        if (visible_pyr_right != viewRight and viewRight != 0) or (visible_pyr_left != viewLeft and viewLeft != 0):
+        if (visible_pyr_right != viewRight and viewRight != 0) or \
+                (visible_pyr_left != viewLeft and viewLeft != 0):
             return False
-        else: 
-            continue 
-    print(answerPyramidMatrix)
-        
+        else:
+            continue
+    return True
 
-def backtracking(row, col):
-    if row == N-1 and col > N-1:
-        return checkValidView()
-    else: 
-        if row < N-1 and col > N-1:
+
+def backtracking(curPyrMap, row, col, baseMap, hints, ansMap):
+    if row == curPyrMap.size-1 and col > curPyrMap.size-1:
+        if checkValidView(curPyrMap, hints):
+            ansMap.map = deepcopy(curPyrMap.map)
+            return ansMap
+    else:
+        if row < curPyrMap.size-1 and col > curPyrMap.size-1:
             row += 1
             col = 0
-        fullSet = set(range(1, N+1))
-        rowSet = set(getRow(answerPyramidMatrix, row))
-        colSet = set(getCol(answerPyramidMatrix, col))
+        fullSet = set(range(1, curPyrMap.size+1))
+        rowSet = set(getRow(curPyrMap.map, row))
+        colSet = set(getCol(curPyrMap.map, col))
         remain = fullSet - rowSet - colSet
-        #print(remain, row, col)
         for value in remain:
-            # @TODO Loại các option đã được chon
-            # @TODO Áp dụng thuật loại bỏ, giảm weight
-            answerPyramidMatrix[row][col] = value
-            backtracking(row, col+1)
-            answerPyramidMatrix[row][col] = 0
-
-
-def main():
-    global N, answerPyramidMatrix, view
-    N = 5
-    view = [
-        [0, 0, 3, 0, 1],
-        [0, 0, 0, 3, 4],
-        [4, 4, 0, 1, 0], 
-        [0, 0, 3, 0, 0]
-    ]
-    answerPyramidMatrix = createAnswerPyramidMatrix(N)
-    
-    backtracking(0, 0)
-
-
-if __name__ == "__main__":
-    main()
+            if value in baseMap.map[row][col]:
+                curPyrMap.map[row][col] = value
+                backtracking(curPyrMap, row, col+1, baseMap, hints, ansMap)
+                curPyrMap.map[row][col] = 0
