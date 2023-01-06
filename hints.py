@@ -1,18 +1,22 @@
-class hintsData():
-    def __init__(self, N=0, topView=[], botView=[], rightView=[], leftView=[]):
-        self._N = N
+class HintsData():
+    def __init__(self, size=0,
+                 topView=[],
+                 botView=[],
+                 rightView=[],
+                 leftView=[]):
+        self._size = size
         self._topView = topView
         self._botView = botView
         self._rightView = rightView
         self._leftView = leftView
 
     @property
-    def N(self):
-        return self._N
+    def size(self):
+        return self._size
 
-    @N.setter
-    def N(self, val):
-        self._N = val
+    @size.setter
+    def size(self, val):
+        self._size = val
 
     @property
     def topView(self):

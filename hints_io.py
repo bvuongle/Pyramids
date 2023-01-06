@@ -1,4 +1,4 @@
-from visiblePyramids import hintsData
+from hints import HintsData
 import copy
 # constant value
 maxInLines = 5
@@ -18,11 +18,11 @@ def read_data_from_file(dir):
     f = open(dir, 'r').read().splitlines()
     if len(f) != maxInLines:
         raise invalidDataLength()
-    data = hintsData()
-    data.N = len(f[1].split(" "))
-    if len(f[2].split(" ")) != data.N or \
-            len(f[3].split(" ")) != data.N or \
-            len(f[4].split(" ")) != data.N:
+    data = HintsData()
+    data.size = len(f[1].split(" "))
+    if len(f[2].split(" ")) != data.size or \
+            len(f[3].split(" ")) != data.size or \
+            len(f[4].split(" ")) != data.size:
         raise invalidDataLength()
     try:
         data.topView = copy.deepcopy([int(x) for x in f[1].split(" ")])

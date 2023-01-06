@@ -1,10 +1,10 @@
 from copy import deepcopy
 
 
-class pyrMap():
+class Board():
     def __init__(self, size=0, map=[]):
         self._size = size
-        self._map = map
+        self._board = map
 
     @property
     def size(self):
@@ -15,12 +15,12 @@ class pyrMap():
         self._size = val
 
     @property
-    def map(self):
-        return self._map
+    def board(self):
+        return self._board
 
-    @map.setter
-    def map(self, lst):
-        self._map = lst
+    @board.setter
+    def board(self, lst):
+        self._board = lst
 
     def defaultMapGen(self, defaultValue):
         newMap = []
@@ -29,5 +29,5 @@ class pyrMap():
             for _ in range(self._size):
                 rowList.append(deepcopy(defaultValue))
             newMap.append(rowList)
-        self._map = deepcopy(newMap)
+        self._board = deepcopy(newMap)
         return newMap
