@@ -1,22 +1,22 @@
 class HintsData():
-    def __init__(self, size=0,
+    def __init__(self, dim=0,
                  topView=[],
                  botView=[],
                  rightView=[],
                  leftView=[]):
-        self._size = size
+        self._dim = dim
         self._topView = topView
         self._botView = botView
         self._rightView = rightView
         self._leftView = leftView
 
     @property
-    def size(self):
-        return self._size
+    def dim(self):
+        return self._dim
 
-    @size.setter
-    def size(self, val):
-        self._size = val
+    @dim.setter
+    def dim(self, val):
+        self._dim = val
 
     @property
     def topView(self):

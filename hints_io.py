@@ -19,10 +19,10 @@ def read_data_from_file(dir):
     if len(f) != maxInLines:
         raise invalidDataLength()
     data = HintsData()
-    data.size = len(f[1].split(" "))
-    if len(f[2].split(" ")) != data.size or \
-            len(f[3].split(" ")) != data.size or \
-            len(f[4].split(" ")) != data.size:
+    data.dim = len(f[1].split(" "))
+    if len(f[2].split(" ")) != data.dim or \
+            len(f[3].split(" ")) != data.dim or \
+            len(f[4].split(" ")) != data.dim:
         raise invalidDataLength()
     try:
         data.topView = copy.deepcopy([int(x) for x in f[1].split(" ")])
