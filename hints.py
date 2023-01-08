@@ -1,14 +1,14 @@
 class HintsData():
     def __init__(self, dim=0,
-                 topView=[],
-                 botView=[],
-                 rightView=[],
-                 leftView=[]):
+                 topHint=[],
+                 botHint=[],
+                 rightHint=[],
+                 leftHint=[]):
         self._dim = dim
-        self._topView = topView
-        self._botView = botView
-        self._rightView = rightView
-        self._leftView = leftView
+        self._topHint = topHint
+        self._botHint = botHint
+        self._rightHint = rightHint
+        self._leftHint = leftHint
 
     @property
     def dim(self):
@@ -19,33 +19,33 @@ class HintsData():
         self._dim = val
 
     @property
-    def topView(self):
-        return self._topView
+    def topHint(self):
+        return self._topHint
 
-    @topView.setter
-    def topView(self, lst):
-        self._topView = lst
-
-    @property
-    def botView(self):
-        return self._botView
-
-    @botView.setter
-    def botView(self, lst):
-        self._botView = lst
+    @topHint.setter
+    def topHint(self, lst):
+        self._topHint = lst
 
     @property
-    def rightView(self):
-        return self._rightView
+    def botHint(self):
+        return self._botHint
 
-    @rightView.setter
-    def rightView(self, lst):
-        self._rightView = lst
+    @botHint.setter
+    def botHint(self, lst):
+        self._botHint = lst
 
     @property
-    def leftView(self):
-        return self._leftView
+    def rightHint(self):
+        return self._rightHint
 
-    @leftView.setter
-    def leftView(self, lst):
-        self._leftView = lst
+    @rightHint.setter
+    def rightHint(self, lst):
+        self._rightHint = lst
+
+    @property
+    def leftHint(self):
+        return self._leftHint
+
+    @leftHint.setter
+    def leftHint(self, lst):
+        self._leftHint = lst

@@ -18,136 +18,132 @@ def noSolutionCheck(hint: list):
     return cnt_H_min <= 1 and cnt_H_max <= 1
 
 
-def setNdelValueCol(thisBoard: Board, row, col, value):
+def setNdelValueCol(thisBrd: Board, row, col, value):
     # Set this value for cell at (row, column)
     # and remove it from cell's list in the same column
-    thisBoard.board[row][col] = [value]
-    for otrCol in range(thisBoard.dim):
-        if otrCol != col and value in thisBoard.board[row][otrCol]:
-            thisBoard.board[row][otrCol].remove(value)
-    return thisBoard
+    thisBrd.board[row][col] = [value]
+    for otrCol in range(thisBrd.dim):
+        if otrCol != col and value in thisBrd.board[row][otrCol]:
+            thisBrd.board[row][otrCol].remove(value)
+    return thisBrd
 
 
-def setNdelValueRow(thisBoard: Board, row, col, value):
+def setNdelValueRow(thisBrd: Board, row, col, value):
     # Set this value for cell at (row, column)
     # and remove it from cell's list in the same row
-    thisBoard.board[row][col] = [value]
-    for otrRow in range(thisBoard.dim):
-        if otrRow != row and value in thisBoard.board[otrRow][col]:
-            thisBoard.board[otrRow][col].remove(value)
-    return thisBoard
+    thisBrd.board[row][col] = [value]
+    for otrRow in range(thisBrd.dim):
+        if otrRow != row and value in thisBrd.board[otrRow][col]:
+            thisBrd.board[otrRow][col].remove(value)
+    return thisBrd
 
 
-def topCond(topView: list, optBoard: Board):
+def topCond(topHint: list, optBrd: Board):
     # Remember that you should loop col from 0 -> N-1, row = 0
-    if not noSolutionCheck(topView):
+    if not noSolutionCheck(topHint):
         raise noSolutionError
-    for col, amount in enumerate(topView):
+    for col, amount in enumerate(topHint):
         if amount == 0:
             continue
         elif amount == 1:
-            optBoard = setNdelValueCol(optBoard, 0, col, optBoard.dim)
-            optBoard = setNdelValueRow(optBoard, 0, col, optBoard.dim)
-        elif amount == optBoard.dim:
-            for row in range(optBoard.dim):
-                optBoard = setNdelValueCol(optBoard, row, col, row+1)
+            optBrd = setNdelValueCol(optBrd, 0, col, optBrd.dim)
+            optBrd = setNdelValueRow(optBrd, 0, col, optBrd.dim)
+        elif amount == optBrd.dim:
+            for row in range(optBrd.dim):
+                optBrd = setNdelValueCol(optBrd, row, col, row+1)
         # else:
         #     pyramidMatrix[0][col] = pyramidMatrix[0][col][:N-amount+1]
         #     for otrRow in range(1, amount):
         #         if N in pyramidMatrix[otrRow][col]:
         #             pyramidMatrix[otrRow][col].remove(N)
-    return optBoard
+    return optBrd
 
 
-def botCond(botView: list, optBoard: Board):
+def botCond(botHint: list, optBrd: Board):
     # Remember that you should loop col from N-1 -> 0, row = N-1
-    if not noSolutionCheck(botView):
+    if not noSolutionCheck(botHint):
         raise noSolutionError
-    for col, amount in enumerate(botView):
+    for col, amount in enumerate(botHint):
         if amount == 0:
             continue
         elif amount == 1:
-            optBoard = setNdelValueCol(optBoard, optBoard.dim-1, col,
-                                       optBoard.dim)
-            optBoard = setNdelValueRow(optBoard, optBoard.dim-1, col,
-                                       optBoard.dim)
-        elif amount == optBoard.dim:
-            for row in range(optBoard.dim):
-                optBoard = setNdelValueCol(optBoard, row, col,
-                                           optBoard.dim-row)
+            optBrd = setNdelValueCol(optBrd, optBrd.dim-1, col, optBrd.dim)
+            optBrd = setNdelValueRow(optBrd, optBrd.dim-1, col, optBrd.dim)
+        elif amount == optBrd.dim:
+            for row in range(optBrd.dim):
+                optBrd = setNdelValueCol(optBrd, row, col, optBrd.dim-row)
         # else:
         #     pyramidMatrix[N-1][col] = pyramidMatrix[N-1][col][:N-amount+1]
         #     for otrRow in range(N-amount+1, N-1):
         #         if N in pyramidMatrix[otrRow][col]:
         #             pyramidMatrix[otrRow][col].remove(N)
-    return optBoard
+    return optBrd
 
 
-def rightCond(rightView: list, optBoard: Board):
+def rightCond(rightHint: list, optBrd: Board):
     # Remember that you should loop row from 0 -> N-1, col = 0
-    if not noSolutionCheck(rightView):
+    if not noSolutionCheck(rightHint):
         raise noSolutionError
-    for row, amount in enumerate(rightView):
+    for row, amount in enumerate(rightHint):
         if amount == 0:
             continue
         elif amount == 0:
             continue
         if amount == 1:
-            optBoard = setNdelValueRow(optBoard, row, 0, optBoard.dim)
-            optBoard = setNdelValueCol(optBoard, row, 0, optBoard.dim)
-        elif amount == optBoard.dim:
-            for col in range(optBoard.dim):
-                setNdelValueRow(optBoard, row, col, col+1)
+            optBrd = setNdelValueRow(optBrd, row, 0, optBrd.dim)
+            optBrd = setNdelValueCol(optBrd, row, 0, optBrd.dim)
+        elif amount == optBrd.dim:
+            for col in range(optBrd.dim):
+                setNdelValueRow(optBrd, row, col, col+1)
         # else:
         #     pyramidMatrix[row][0] = pyramidMatrix[row][0][:N-amount+1]
         #     for otrCol in range(1, amount):
         #         if N in pyramidMatrix[row][otrCol]:
         #             pyramidMatrix[row][otrCol].remove(N)
-    return optBoard
+    return optBrd
 
 
-def leftCond(leftView: list, optBoard: Board):
+def leftCond(leftHint: list, optBrd: Board):
     # Remember that you should loop row from N-1 -> 0, col = N-1
-    if not noSolutionCheck(leftView):
+    if not noSolutionCheck(leftHint):
         raise noSolutionError
-    for row, amount in enumerate(leftView):
+    for row, amount in enumerate(leftHint):
         if amount == 0:
             continue
         elif amount == 1:
-            optBoard = setNdelValueRow(optBoard, row, optBoard-1, optBoard)
-            optBoard = setNdelValueCol(optBoard, row, optBoard-1, optBoard)
-        elif amount == optBoard.dim:
-            for col in range(optBoard.dim):
-                optBoard = setNdelValueRow(optBoard, row, col,
-                                           optBoard.dim-col)
+            optBrd = setNdelValueRow(optBrd, row, optBrd-1, optBrd)
+            optBrd = setNdelValueCol(optBrd, row, optBrd-1, optBrd)
+        elif amount == optBrd.dim:
+            for col in range(optBrd.dim):
+                optBrd = setNdelValueRow(optBrd, row, col, optBrd.dim-col)
         # else:
         #     pyramidMatrix[row][N-1] = pyramidMatrix[row][N-1][:N-amount+1]
         #     for otrCol in range(N-amount+1, N-1):
         #         if N in pyramidMatrix[row][otrCol]:
         #             pyramidMatrix[row][otrCol].remove(N)
-    return optBoard
+    return optBrd
 
 
-def remRedundantCond(optBoard: Board):
-    for row in range(optBoard.dim):
-        for col in range(optBoard.dim):
-            if len(optBoard.board[row][col]) == 1:
-                optBoard = setNdelValueCol(optBoard, row, col,
-                                           optBoard.board[row][col][0])
-                optBoard = setNdelValueRow(optBoard, row, col,
-                                           optBoard.board[row][col][0])
-    return optBoard
+def remRedundantCond(optBrd: Board):
+    for row in range(optBrd.dim):
+        for col in range(optBrd.dim):
+            if len(optBrd.board[row][col]) == 1:
+                optBrd = setNdelValueCol(optBrd, row, col,
+                                         optBrd.board[row][col][0])
+                optBrd = setNdelValueRow(optBrd, row, col,
+                                         optBrd.board[row][col][0])
+    return optBrd
 
 
 def analyzeBasicCond(hints: HintsData):
-    condBoard = Board(dim=hints.dim)
-    baseList = list(range(1, condBoard.dim+1))
-    condBoard.fillBoardWithValue(baseList)
+    condBrd = Board(dim=hints.dim)
+    baseList = list(range(1, condBrd.dim+1))
+    condBrd.fillBoardWithValue(baseList)
 
-    condBoard = deepcopy(topCond(hints.topView, condBoard))
-    condBoard = deepcopy(botCond(hints.botView, condBoard))
-    condBoard = deepcopy(rightCond(hints.rightView, condBoard))
-    condBoard = deepcopy(leftCond(hints.leftView, condBoard))
-    condBoard = deepcopy(remRedundantCond(condBoard))
+    condBrd = deepcopy(topCond(hints.topHint, condBrd))
+    condBrd = deepcopy(botCond(hints.botHint, condBrd))
+    condBrd = deepcopy(rightCond(hints.rightHint, condBrd))
+    condBrd = deepcopy(leftCond(hints.leftHint, condBrd))
+    condBrd = deepcopy(remRedundantCond(condBrd))
 
-    return condBoard
+    return condBrd

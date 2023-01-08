@@ -35,11 +35,11 @@ class Board():
         self._board = lst
 
     def fillBoardWithValue(self, value):
-        newBoard = []
+        newBrd = []
         for _ in range(self._dim):
             rowList = []
             for _ in range(self._dim):
                 rowList.append(deepcopy(value))
-            newBoard.append(rowList)
-        self._board = deepcopy(newBoard)
-        return newBoard
+            newBrd.append(rowList)
+        self._board = deepcopy(newBrd)
+        return newBrd
