@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>Piramidy</class>
+ <widget class="QMainWindow" name="Piramidy">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -37,6 +37,9 @@
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
+  </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
   </property>
   <property name="iconSize">
    <size>
@@ -562,7 +565,7 @@
       <property name="geometry">
        <rect>
         <x>710</x>
-        <y>30</y>
+        <y>50</y>
         <width>71</width>
         <height>51</height>
        </rect>
@@ -574,23 +577,13 @@
        <number>20</number>
       </property>
      </widget>
-     <widget class="QLineEdit" name="debug">
-      <property name="geometry">
-       <rect>
-        <x>680</x>
-        <y>110</y>
-        <width>91</width>
-        <height>25</height>
-       </rect>
-      </property>
-     </widget>
      <widget class="QPushButton" name="reset_btn">
       <property name="geometry">
        <rect>
-        <x>708</x>
-        <y>160</y>
-        <width>81</width>
-        <height>25</height>
+        <x>650</x>
+        <y>290</y>
+        <width>111</width>
+        <height>41</height>
        </rect>
       </property>
       <property name="text">
@@ -600,10 +593,10 @@
      <widget class="QPushButton" name="run_btn">
       <property name="geometry">
        <rect>
-        <x>610</x>
-        <y>160</y>
-        <width>81</width>
-        <height>28</height>
+        <x>650</x>
+        <y>220</y>
+        <width>111</width>
+        <height>41</height>
        </rect>
       </property>
       <property name="text">
@@ -613,21 +606,21 @@
      <widget class="QPushButton" name="returnS_btn">
       <property name="geometry">
        <rect>
-        <x>620</x>
-        <y>550</y>
-        <width>161</width>
-        <height>28</height>
+        <x>650</x>
+        <y>430</y>
+        <width>111</width>
+        <height>41</height>
        </rect>
       </property>
       <property name="text">
-       <string>Return to menu</string>
+       <string>Return</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label">
+     <widget class="QLabel" name="label_size">
       <property name="geometry">
        <rect>
         <x>620</x>
-        <y>20</y>
+        <y>40</y>
         <width>81</width>
         <height>61</height>
        </rect>
@@ -639,17 +632,43 @@
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Board&lt;/p&gt;&lt;p&gt;Size&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="import_btn">
+     <widget class="QPushButton" name="openf_btn">
       <property name="geometry">
        <rect>
-        <x>610</x>
-        <y>200</y>
-        <width>181</width>
-        <height>28</height>
+        <x>650</x>
+        <y>150</y>
+        <width>111</width>
+        <height>41</height>
        </rect>
       </property>
       <property name="text">
-       <string>Import Data From File</string>
+       <string>Open...</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="save_btn">
+      <property name="geometry">
+       <rect>
+        <x>650</x>
+        <y>360</y>
+        <width>111</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Save</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="debug">
+      <property name="geometry">
+       <rect>
+        <x>640</x>
+        <y>490</y>
+        <width>111</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
       </property>
      </widget>
     </widget>
@@ -657,14 +676,34 @@
      <widget class="QPushButton" name="returnH_btn">
       <property name="geometry">
        <rect>
-        <x>460</x>
-        <y>430</y>
-        <width>93</width>
-        <height>28</height>
+        <x>630</x>
+        <y>530</y>
+        <width>141</width>
+        <height>41</height>
        </rect>
       </property>
       <property name="text">
        <string>Return</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_2">
+      <property name="geometry">
+       <rect>
+        <x>160</x>
+        <y>100</y>
+        <width>531</width>
+        <height>91</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>30</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>How to use this program?</string>
       </property>
      </widget>
     </widget>
@@ -672,14 +711,57 @@
      <widget class="QPushButton" name="returnA_btn">
       <property name="geometry">
        <rect>
-        <x>460</x>
-        <y>430</y>
-        <width>93</width>
-        <height>28</height>
+        <x>630</x>
+        <y>530</y>
+        <width>141</width>
+        <height>41</height>
        </rect>
       </property>
       <property name="text">
        <string>Return</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_3">
+      <property name="geometry">
+       <rect>
+        <x>300</x>
+        <y>70</y>
+        <width>201</width>
+        <height>91</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>30</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>About Me</string>
+      </property>
+     </widget>
+     <widget class="QTextBrowser" name="textBrowser">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>190</y>
+        <width>381</width>
+        <height>192</height>
+       </rect>
+      </property>
+      <property name="html">
+       <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;PIPR Project Z22 - Piramidy&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;20/01/2023&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Created by: Binh Vuong Le Duc - 330097&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Instructor: Wojciech Bogumił Masarczyk&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
     </widget>
