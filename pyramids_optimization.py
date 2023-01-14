@@ -111,8 +111,8 @@ def leftCond(leftHint: list, optBrd: Board):
         if amount == 0:
             continue
         elif amount == 1:
-            optBrd = setNdelValueRow(optBrd, row, optBrd-1, optBrd)
-            optBrd = setNdelValueCol(optBrd, row, optBrd-1, optBrd)
+            optBrd = setNdelValueRow(optBrd, row, optBrd.dim-1, optBrd)
+            optBrd = setNdelValueCol(optBrd, row, optBrd.dim-1, optBrd)
         elif amount == optBrd.dim:
             for col in range(optBrd.dim):
                 optBrd = setNdelValueRow(optBrd, row, col, optBrd.dim-col)
