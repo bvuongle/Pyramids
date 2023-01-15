@@ -1,3 +1,6 @@
+from copy import deepcopy
+
+
 class HintsData():
     def __init__(self, dim=0,
                  topHint=[],
@@ -24,7 +27,7 @@ class HintsData():
 
     @topHint.setter
     def topHint(self, lst):
-        self._topHint = lst
+        self._topHint = deepcopy(lst)
 
     @property
     def botHint(self):
@@ -32,7 +35,7 @@ class HintsData():
 
     @botHint.setter
     def botHint(self, lst):
-        self._botHint = lst
+        self._botHint = deepcopy(lst)
 
     @property
     def rightHint(self):
@@ -40,7 +43,7 @@ class HintsData():
 
     @rightHint.setter
     def rightHint(self, lst):
-        self._rightHint = lst
+        self._rightHint = deepcopy(lst)
 
     @property
     def leftHint(self):
@@ -48,4 +51,4 @@ class HintsData():
 
     @leftHint.setter
     def leftHint(self, lst):
-        self._leftHint = lst
+        self._leftHint = deepcopy(lst)

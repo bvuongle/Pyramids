@@ -1,14 +1,22 @@
-from hints_io import read_data_from_file, write_data_to_file
 from hints import HintsData
 from board import Board
-from copy import deepcopy
-from pyramids_optimization import analyzeBasicCond
-from pyramids_backtracking import backtracking
+from pyramids_optimization import CondBoard
+from board_resolver import BoardResolver
+from main_ui import Ui_Piramidy
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import QApplication, QMainWindow, QHeaderView
 from PyQt5.QtWidgets import QTableWidgetItem, QFileDialog
-from main_ui import Ui_Piramidy
 import sys
+
+
+class invalidInputFile(Exception):
+    def __init__(self):
+        super().__init__("Input data in this file is in the wrong format")
+
+
+class invalidDataLength(Exception):
+    def __init__(self):
+        super().__init__("The length of input data is incorrect")
 
 
 class pyramidsWindow(QMainWindow):
@@ -19,6 +27,15 @@ class pyramidsWindow(QMainWindow):
         self.hints = HintsData()
         self.ansBoard = Board()
         self.showHome()
+
+    @staticmethod
+    def setTableValue(table, data):
+        for row in range(table.rowCount()):
+            for col in range(table.columnCount()):
+                itemValue = str(data[row][col])
+                table.setItem(row, col, QTableWidgetItem(itemValue))
+                table.item(row, col).setTextAlignment(QtCore.Qt.AlignVCenter
+                                                      | QtCore.Qt.AlignHCenter)
 
     def showHome(self):
         self.ui.mainStack.setCurrentWidget(self.ui.home)
@@ -34,7 +51,7 @@ class pyramidsWindow(QMainWindow):
         self.ui.reset_btn.clicked.connect(self.resetBoard)
         self.ui.run_btn.clicked.connect(self.solve)
         self.ui.openf_btn.clicked.connect(self.getDataFrFile)
-        self.ui.save_btn.clicked.connect(self.pasteDataToFile)
+        self.ui.save_btn.clicked.connect(self.saveDataToFile)
         self.ui.returnS_btn.clicked.connect(self.showHome)
         self.ui.hintTop.itemChanged.connect(self.clearAnsTable)
         self.ui.hintBot.itemChanged.connect(self.clearAnsTable)
@@ -54,14 +71,6 @@ class pyramidsWindow(QMainWindow):
 
     def clearAnsTable(self):
         self.ui.ansTable.clear()
-
-    def setTableValue(self, table, data):
-        for row in range(table.rowCount()):
-            for col in range(table.columnCount()):
-                itemValue = str(data[row][col])
-                table.setItem(row, col, QTableWidgetItem(itemValue))
-                table.item(row, col).setTextAlignment(QtCore.Qt.AlignVCenter
-                                                      | QtCore.Qt.AlignHCenter)
 
     def renewBoard(self):
         value = self.ui.sizeBoard.value()
@@ -101,7 +110,7 @@ class pyramidsWindow(QMainWindow):
         self.ui.sizeBoard.setValue(1)
         self.renewBoard()
 
-    def getInputData(self) -> HintsData:
+    def getInputData(self) -> None:
         topHint = []
         botHint = []
         rightHint = []
@@ -111,39 +120,90 @@ class pyramidsWindow(QMainWindow):
             botHint.append(int(self.ui.hintBot.item(0, i).text()))
             rightHint.append(int(self.ui.hintRight.item(i, 0).text()))
             leftHint.append(int(self.ui.hintLeft.item(i, 0).text()))
-        return HintsData(self.ui.sizeBoard.value(),
-                         topHint, botHint, rightHint, leftHint)
-
-    def pasteInputData(self, hints: HintsData):
-        self.ui.sizeBoard.setValue(hints.dim)
-        self.renewBoard()
-        self.setTableValue(self.ui.hintTop, [hints.topHint])
-        self.setTableValue(self.ui.hintBot, [hints.botHint])
-        self.setTableValue(self.ui.hintRight, [[x] for x in hints.rightHint])
-        self.setTableValue(self.ui.hintLeft, [[x] for x in hints.leftHint])
+        self.hints.dim = self.ui.sizeBoard.value()
+        self.hints.topHint = topHint
+        self.hints.botHint = botHint
+        self.hints.rightHint = rightHint
+        self.hints.leftHint = leftHint
         return None
 
-    def getDataFrFile(self) -> HintsData:
+    def pasteInputData(self) -> None:
+        self.ui.sizeBoard.setValue(self.hints.dim)
+        self.renewBoard()
+        self.setTableValue(self.ui.hintTop, [self.hints.topHint])
+        self.setTableValue(self.ui.hintBot, [self.hints.botHint])
+        self.setTableValue(self.ui.hintRight,
+                           [[x] for x in self.hints.rightHint])
+        self.setTableValue(self.ui.hintLeft,
+                           [[x] for x in self.hints.leftHint])
+        return None
+
+    def getDataFrFile(self) -> None:
         self.resetBoard()
         fname = QFileDialog.getOpenFileName(self, "Open File", "./",
                                             "Text Files(*.txt)")
-        hints = read_data_from_file(fname[0])
-        self.pasteInputData(hints)
-        return hints
+        f = open(fname[0], 'r')
+        lines = f.read().splitlines()
+        # Each input file is only allowed to contain 4 lines,
+        # representing the hint for the top, bottom, right and left
+        if len(lines) != 4:
+            raise invalidDataLength()
+        tmpDim = len(lines[0].split(" "))
+        if len(lines[1].split(" ")) != tmpDim or \
+                len(lines[2].split(" ")) != tmpDim or \
+                len(lines[3].split(" ")) != tmpDim:
+            raise invalidDataLength()
+        try:
+            self.hints.dim = tmpDim
+            self.hints.topHint = [int(x) for x in lines[0].split(" ")]
+            self.hints.botHint = [int(x) for x in lines[1].split(" ")]
+            self.hints.rightHint = [int(x) for x in lines[2].split(" ")]
+            self.hints.leftHint = [int(x) for x in lines[3].split(" ")]
+        except ValueError:
+            raise invalidInputFile()
+        f.close()
+        print(self.hints.topHint)
+        self.pasteInputData()
+        return None
 
-    def pasteDataToFile(self):
+    def saveDataToFile(self) -> None:
         fname = QFileDialog.getSaveFileName(self, "Save File")
-        write_data_to_file(fname[0], self.hints, self.ansBoard)
+        f = open(fname[0], 'w')
+        f.write("Answer to the problem with board size of ")
+        f.write(f"N = {self.hints.dim}, and hints is as follows: ")
+        f.write("\n[\n")
+        f.writelines(f"{x} " for x in self.hints.topHint)
+        f.write("\n")
+        f.writelines(f"{x} " for x in self.hints.botHint)
+        f.write("\n")
+        f.writelines(f"{x} " for x in self.hints.rightHint)
+        f.write("\n")
+        f.writelines(f"{x} " for x in self.hints.leftHint)
+        f.write("\n]\n\n")
+        f.write("#"*20)
+        f.write("\n")
+        for row in self.ansBoard.board:
+            for cell in row:
+                f.write(f"{cell} ")
+            f.write("\n")
+        f.write("#"*20)
+        f.close()
+        return None
 
-    def solve(self):
-        self.hints = deepcopy(self.getInputData())
-        condBrd = analyzeBasicCond(self.hints)
+    def solve(self) -> None:
+        self.getInputData()
+        condBrd = CondBoard(dim=self.hints.dim,
+                            base=list(range(1, self.hints.dim+1)))
+        condBrd.analyzeBasicCond(self.hints)
         curPyrBrd = Board(dim=condBrd.dim)
-        self.ansBoard = deepcopy(Board(dim=condBrd.dim))
         curPyrBrd.fillBoardWithValue(0)
-        backtracking(curPyrBrd, 0, 0, condBrd, self.hints, self.ansBoard)
-        self.setTableValue(self.ui.ansTable, self.ansBoard.board)
+        resolver = BoardResolver(curPyrBrd, self.hints, condBrd)
+        resolver.backtracking(0, 0)
+        self.setTableValue(self.ui.ansTable, resolver.curBrd.board)
+        self.ansBoard.dim = resolver.curBrd.dim
+        self.ansBoard.board = resolver.curBrd.board
         self.ui.save_btn.setEnabled(True)
+        return None
 
 
 def guiMain(args):
@@ -153,18 +213,5 @@ def guiMain(args):
     return app.exec_()
 
 
-def main():
-    hints = HintsData()
-    hints = read_data_from_file("./test/pyramid_test_1.txt")
-    condBrd = Board()
-    condBrd = (analyzeBasicCond(hints))
-    curPyrBrd = Board(dim=condBrd.dim)
-    ansMap = Board(dim=condBrd.dim)
-    curPyrBrd.fillBoardWithValue(0)
-    backtracking(curPyrBrd, 0, 0, condBrd, hints, ansMap)
-    write_data_to_file("./ans.txt", hints, ansMap)
-
-
 if __name__ == "__main__":
     guiMain(sys.argv)
-    # main()

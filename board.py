@@ -32,7 +32,7 @@ class Board():
 
     @board.setter
     def board(self, lst):
-        self._board = lst
+        self._board = deepcopy(lst)
 
     def fillBoardWithValue(self, value):
         newBrd = []
