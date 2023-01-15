@@ -658,19 +658,6 @@
        <string>Save</string>
       </property>
      </widget>
-     <widget class="QLabel" name="debug">
-      <property name="geometry">
-       <rect>
-        <x>640</x>
-        <y>490</y>
-        <width>111</width>
-        <height>51</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>TextLabel</string>
-      </property>
-     </widget>
     </widget>
     <widget class="QWidget" name="help">
      <widget class="QPushButton" name="returnH_btn">

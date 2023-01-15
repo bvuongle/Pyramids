@@ -1,16 +1,22 @@
 from board import Board
 from hints import HintsData
-
-
-class noSolutionError(Exception):
-    def __init__(self):
-        super().__init__("This problem have no solution")
+from exception import NoSolutionError
 
 
 class CondBoard(Board):
-    def __init__(self, base: list, dim=0, board=[]):
+    def __init__(self, dim=0, board=[], base=[]):
         super().__init__(dim, board)
         self.fillBoardWithValue(base)
+
+    @staticmethod
+    def noSolutionCheck(hint: list):
+        cnt_H_min = cnt_H_max = 0
+        for amount in hint:
+            if amount == 1:
+                cnt_H_min += 1
+            elif amount == len(hint):
+                cnt_H_max += 1
+        return cnt_H_min <= 1 and cnt_H_max <= 1
 
     def setNdelValueCol(self, row, col, value) -> None:
         # Set this value for cell at (row, column)
@@ -32,8 +38,8 @@ class CondBoard(Board):
 
     def topCond(self, topHint: list) -> None:
         # Remember that you should loop col from 0 -> N-1, row = 0
-        if not noSolutionCheck(topHint):
-            raise noSolutionError
+        if not self.noSolutionCheck(topHint):
+            raise NoSolutionError
         for col, amount in enumerate(topHint):
             if amount == 0:
                 continue
@@ -43,17 +49,17 @@ class CondBoard(Board):
             elif amount == self.dim:
                 for row in range(self.dim):
                     self.setNdelValueCol(row, col, row+1)
-            # else:
-            #     pyramidMatrix[0][col] = pyramidMatrix[0][col][:N-amount+1]
-            #     for otrRow in range(1, amount):
-            #         if N in pyramidMatrix[otrRow][col]:
-            #             pyramidMatrix[otrRow][col].remove(N)
+            else:
+                self.board[0][col] = self.board[0][col][:self.dim-amount+1]
+                for otrRow in range(1, amount-1):
+                    if self.dim in self.board[otrRow][col]:
+                        self.board[otrRow][col].remove(self.dim)
         return None
 
     def botCond(self, botHint: list) -> None:
         # Remember that you should loop col from N-1 -> 0, row = N-1
-        if not noSolutionCheck(botHint):
-            raise noSolutionError
+        if not self.noSolutionCheck(botHint):
+            raise NoSolutionError
         for col, amount in enumerate(botHint):
             if amount == 0:
                 continue
@@ -63,17 +69,18 @@ class CondBoard(Board):
             elif amount == self.dim:
                 for row in range(self.dim):
                     self.setNdelValueCol(row, col, self.dim-row)
-            # else:
-            #     pyramidMatrix[N-1][col] = pyramidMatrix[N-1][col][:N-amount+1]
-            #     for otrRow in range(N-amount+1, N-1):
-            #         if N in pyramidMatrix[otrRow][col]:
-            #             pyramidMatrix[otrRow][col].remove(N)
+            else:
+                self.board[self.dim-1][col] = \
+                    self.board[self.dim-1][col][:self.dim-amount+1]
+                for otrRow in range(self.dim-amount+1, self.dim-1):
+                    if self.dim in self.board[otrRow][col]:
+                        self.board[otrRow][col].remove(self.dim)
         return None
 
     def rightCond(self, rightHint: list) -> None:
         # Remember that you should loop row from 0 -> N-1, col = 0
-        if not noSolutionCheck(rightHint):
-            raise noSolutionError
+        if not self.noSolutionCheck(rightHint):
+            raise NoSolutionError
         for row, amount in enumerate(rightHint):
             if amount == 0:
                 continue
@@ -85,17 +92,17 @@ class CondBoard(Board):
             elif amount == self.dim:
                 for col in range(self.dim):
                     self.setNdelValueRow(row, col, col+1)
-            # else:
-            #     pyramidMatrix[row][0] = pyramidMatrix[row][0][:N-amount+1]
-            #     for otrCol in range(1, amount):
-            #         if N in pyramidMatrix[row][otrCol]:
-            #             pyramidMatrix[row][otrCol].remove(N)
+            else:
+                self.board[row][0] = self.board[row][0][:self.dim-amount+1]
+                for otrCol in range(1, amount-1):
+                    if self.dim in self.board[row][otrCol]:
+                        self.board[row][otrCol].remove(self.dim)
         return None
 
     def leftCond(self, leftHint: list) -> None:
         # Remember that you should loop row from N-1 -> 0, col = N-1
-        if not noSolutionCheck(leftHint):
-            raise noSolutionError
+        if not self.noSolutionCheck(leftHint):
+            raise NoSolutionError
         for row, amount in enumerate(leftHint):
             if amount == 0:
                 continue
@@ -105,11 +112,12 @@ class CondBoard(Board):
             elif amount == self.dim:
                 for col in range(self.dim):
                     self.setNdelValueRow(row, col, self.dim-col)
-            # else:
-            #     pyramidMatrix[row][N-1] = pyramidMatrix[row][N-1][:N-amount+1]
-            #     for otrCol in range(N-amount+1, N-1):
-            #         if N in pyramidMatrix[row][otrCol]:
-            #             pyramidMatrix[row][otrCol].remove(N)
+            else:
+                self.board[row][self.dim-1] = \
+                    self.board[row][self.dim-1][:self.dim-amount+1]
+                for otrCol in range(self.dim-amount+1, self.dim-1):
+                    if self.dim in self.board[row][otrCol]:
+                        self.board[row][otrCol].remove(self.dim)
         return self
 
     def remRedundantCond(self) -> None:
@@ -127,13 +135,3 @@ class CondBoard(Board):
         self.leftCond(hints.leftHint)
         self.remRedundantCond()
         return None
-
-
-def noSolutionCheck(hint: list):
-    cnt_H_min = cnt_H_max = 0
-    for amount in hint:
-        if amount == 1:
-            cnt_H_min += 1
-        elif amount == len(hint):
-            cnt_H_max += 1
-    return cnt_H_min <= 1 and cnt_H_max <= 1

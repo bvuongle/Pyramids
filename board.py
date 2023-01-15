@@ -1,10 +1,5 @@
+from exception import WrongDimension
 from copy import deepcopy
-
-
-class WrongDimension(Exception):
-    def __init__(self) -> None:
-        super().__init__("Dimension of this board is \
-            different from the one provided")
 
 
 class Board():
@@ -42,4 +37,3 @@ class Board():
                 rowList.append(deepcopy(value))
             newBrd.append(rowList)
         self._board = deepcopy(newBrd)
-        return newBrd

@@ -1,25 +1,57 @@
 from board import Board
 from hints import HintsData
-from pyramids_optimization import CondBoard
+from condition_analysis import CondBoard
 
 
 class BoardResolver():
-    def __init__(self, curBrd: Board, hints: HintsData, condBrd: CondBoard):
+    def __init__(self, hints=HintsData(), condBrd=CondBoard()):
         self.flag = 0
-        self.curBrd = curBrd
-        self.hints = hints
-        self.condBrd = condBrd
+        self._curBrd = Board(dim=hints.dim)
+        self._curBrd.fillBoardWithValue(0)
+        self._hints = hints
+        self._condBrd = condBrd
+
+    @property
+    def curBrd(self):
+        return self._curBrd
+
+    @curBrd.setter
+    def curBrd(self, newBoard: Board()):
+        self._curBrd = newBoard
+        return self._curBrd
+
+    def renewCurBrd(self):
+        self._curBrd = Board(dim=self.hints.dim)
+        self._curBrd.fillBoardWithValue(0)
+
+    @property
+    def hints(self):
+        return self._hints
+
+    @hints.setter
+    def hints(self, newHints: HintsData):
+        self._hints = newHints
+        return self._hints
+
+    @property
+    def condBrd(self):
+        return self._condBrd
+
+    @condBrd.setter
+    def condBrd(self, newCondBrd: CondBoard()):
+        self._condBrd = newCondBrd
+        return self._condBrd
 
     @staticmethod
-    def getRow(matrix, row):
+    def getRow(matrix, row) -> list:
         return [x for x in matrix[row] if x != 0]
 
     @staticmethod
-    def getCol(matrix, col):
+    def getCol(matrix, col) -> list:
         return [row[col] for row in matrix if row[col] != 0]
 
     @staticmethod
-    def numVisiblePyramids(arr):
+    def numVisiblePyramids(arr) -> int:
         cur = arr[0]
         n = len(arr)
         cnt = 1
@@ -29,7 +61,31 @@ class BoardResolver():
                 cur = arr[i]
         return cnt
 
-    def checkResultWithCond(self):
+    def saveData(self, dir):
+        if self.flag == 0:
+            return None
+        f = open(dir, 'w')
+        f.write("Answer to the problem with board size of ")
+        f.write(f"N = {self.hints.dim}, and hints is as follows: ")
+        f.write("\n[\n")
+        f.writelines(f"{x} " for x in self.hints.topHint)
+        f.write("\n")
+        f.writelines(f"{x} " for x in self.hints.botHint)
+        f.write("\n")
+        f.writelines(f"{x} " for x in self.hints.rightHint)
+        f.write("\n")
+        f.writelines(f"{x} " for x in self.hints.leftHint)
+        f.write("\n]\n\n")
+        f.write("#"*20)
+        f.write("\n")
+        for row in self.curBrd.board:
+            for cell in row:
+                f.write(f"{cell} ")
+            f.write("\n")
+        f.write("#"*20)
+        f.close()
+
+    def checkResultWithCond(self) -> bool:
         for idx in range(0, self.hints.dim):
             topCond = self.hints.topHint[idx]
             botCond = self.hints.botHint[idx]
