@@ -1,3 +1,4 @@
+from hints import HintsData
 from condition_analysis import CondBoard
 from board_resolver import BoardResolver
 from main_ui import Ui_Piramidy
@@ -121,7 +122,10 @@ class PyramidsWindow(QMainWindow):
         self.renewBoard()
 
     def getInputData(self) -> bool:
-        topHint = botHint = rightHint = leftHint = []
+        topHint = []
+        botHint = []
+        rightHint = []
+        leftHint = []
         try:
             for i in range(self.ui.sizeBoard.value()):
                 topHint.append(int(self.ui.hintTop.item(0, i).text()))
@@ -140,25 +144,10 @@ class PyramidsWindow(QMainWindow):
                 minHintsVal not in range(0, self.ui.sizeBoard.value()+1):
             self.showError(exception.OutsideRange())
             return False
-
-        self.resolver.hints.dim = self.ui.sizeBoard.value()
-        self.resolver.renewCurBrd()
-        self.resolver.hints.topHint = topHint
-        self.resolver.hints.botHint = botHint
-        self.resolver.hints.rightHint = rightHint
-        self.resolver.hints.leftHint = leftHint
-        self.solve()
+        hints = HintsData(self.ui.sizeBoard.value(),
+                          topHint, botHint, rightHint, leftHint)
+        self.solve(hints)
         return True
-
-    def pasteInputData(self):
-        self.ui.sizeBoard.setValue(self.resolver.hints.dim)
-        self.renewBoard()
-        self.setTableValue(self.ui.hintTop, [self.resolver.hints.topHint])
-        self.setTableValue(self.ui.hintBot, [self.resolver.hints.botHint])
-        self.setTableValue(self.ui.hintRight,
-                           [[x] for x in self.resolver.hints.rightHint])
-        self.setTableValue(self.ui.hintLeft,
-                           [[x] for x in self.resolver.hints.leftHint])
 
     def getDataFrFile(self) -> bool:
         self.resetBoard()
@@ -166,24 +155,41 @@ class PyramidsWindow(QMainWindow):
                                             "Text Files(*.txt)")
 
         try:
-            self.resolver.hints.getData(fname[0])
+            hints = HintsData()
+            hints.getData(fname[0])
         except exception.LengthFileIncorrect:
             self.showError(exception.LengthFileIncorrect())
             return False
         except exception.NonStandardChars:
             self.showError(exception.NonStandardChars())
             return False
-        self.pasteInputData()
+        except FileNotFoundError:
+            return False
+        self.pasteInputData(hints)
         return True
 
-    def saveDataToFile(self):
-        fname = QFileDialog.getSaveFileName(self, "Save File")
-        self.resolver.saveData(fname[0])
+    def pasteInputData(self, hints: HintsData):
+        self.ui.sizeBoard.setValue(hints.dim)
+        self.renewBoard()
+        self.setTableValue(self.ui.hintTop, [hints.topHint])
+        self.setTableValue(self.ui.hintBot, [hints.botHint])
+        self.setTableValue(self.ui.hintRight,
+                           [[x] for x in hints.rightHint])
+        self.setTableValue(self.ui.hintLeft,
+                           [[x] for x in hints.leftHint])
 
-    def solve(self) -> None:
-        condBase = list(range(1, self.resolver.hints.dim+1))
-        self.resolver.condBrd = CondBoard(dim=self.resolver.hints.dim,
-                                          base=condBase)
+    def saveDataToFile(self) -> bool:
+        fname = QFileDialog.getSaveFileName(self, "Save File")
+        try:
+            self.resolver.saveData(fname[0])
+            return True
+        except FileNotFoundError:
+            return False
+
+    def solve(self, hints: HintsData) -> None:
+        condBase = list(range(1, hints.dim+1))
+        self.resolver = BoardResolver(hints,
+                                      CondBoard(dim=hints.dim, base=condBase))
         try:
             self.resolver.condBrd.analyzeBasicCond(self.resolver.hints)
         except exception.NoSolutionError:
