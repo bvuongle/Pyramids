@@ -4,11 +4,11 @@ from copy import deepcopy
 
 class Board():
     def __init__(self, dim=0, board=[]):
-        self.__checkDimNBoardRelation(dim, board)
+        self.checkDimNBoardRelation(dim, board)
         self._dim = dim if dim != 0 else len(board)
         self._board = board
 
-    def __checkDimNBoardRelation(self, dim, board):
+    def checkDimNBoardRelation(self, dim, board):
         if dim != 0 and board:
             if len(board) != dim:
                 raise WrongDimension()

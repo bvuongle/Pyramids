@@ -1,8 +1,12 @@
-from board import Board, WrongDimension
-from pytest import raises
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from board import Board  # noqa: E402
+from exception import WrongDimension  # noqa: E402
+from pytest import raises  # noqa: E402
 
 
-def test_init():
+def test_init_board():
     newBrd = Board(2, [[1, 2], [1, 2]])
     assert newBrd.dim == 2
     assert newBrd.board == [[1, 2], [1, 2]]
@@ -26,11 +30,8 @@ def test_init_no_board_provided():
 
 
 def test_init_dimP_diff_dimB():
-    # Provied dimension is different
-    # from dimension of the board
     with raises(WrongDimension):
-        assert Board(4, [[1, 2], [1, 2]]) == \
-            "Dimension of this board is different from the one provided"
+        assert Board(4, [[1, 2], [1, 2]]) == str(WrongDimension())
 
 
 def test_dim_setter():
@@ -46,3 +47,13 @@ def test_board_setter():
               [7, 8, 9]]
     newBrd.board = matrix
     assert newBrd.board == matrix and id(newBrd) != id(matrix)
+
+
+def test_fill_board_with_value():
+    newBrd = Board(dim=5)
+    newBrd.fillBoardWithValue(3)
+    assert newBrd.board == [[3, 3, 3, 3, 3],
+                            [3, 3, 3, 3, 3],
+                            [3, 3, 3, 3, 3],
+                            [3, 3, 3, 3, 3],
+                            [3, 3, 3, 3, 3]]
