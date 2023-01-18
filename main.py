@@ -173,7 +173,7 @@ class PyramidsWindow(QMainWindow):
     def saveDataToFile(self) -> bool:
         fname = QFileDialog.getSaveFileName(self, "Save File")
         try:
-            self.resolver.saveData(fname[0])
+            self.prob.saveData(fname[0])
             return True
         except FileNotFoundError:
             return False

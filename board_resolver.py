@@ -16,32 +16,18 @@ class BoardResolver():
     def curBrd(self):
         return self._curBrd
 
-    @curBrd.setter
-    def curBrd(self, newBoard: Board()):
-        self._curBrd = newBoard
-        return self._curBrd
-
-    def renewCurBrd(self):
-        self._curBrd = Board(dim=self.hints.dim)
-        self._curBrd.fillBoardWithValue(0)
+    @property
+    def condBrd(self):
+        return self._condBrd
 
     @property
     def hints(self):
         return self._hints
 
     @hints.setter
-    def hints(self, newHints: HintsData):
+    def hints(self, newHints):
         self._hints = newHints
         return self._hints
-
-    @property
-    def condBrd(self):
-        return self._condBrd
-
-    @condBrd.setter
-    def condBrd(self, newCondBrd):
-        self._condBrd = newCondBrd
-        return self._condBrd
 
     @staticmethod
     def getRow(matrix, row) -> list:
@@ -66,24 +52,19 @@ class BoardResolver():
         if self.flag == 0:
             return None
         f = open(dir, 'w')
-        f.write("Answer to the problem with board size of ")
-        f.write(f"N = {self.hints.dim}, and hints is as follows: ")
-        f.write("\n[\n")
-        f.writelines(f"{x} " for x in self.hints.topHint)
-        f.write("\n")
-        f.writelines(f"{x} " for x in self.hints.botHint)
-        f.write("\n")
-        f.writelines(f"{x} " for x in self.hints.rightHint)
-        f.write("\n")
-        f.writelines(f"{x} " for x in self.hints.leftHint)
-        f.write("\n]\n\n")
-        f.write("#"*20)
-        f.write("\n")
-        for row in self.curBrd.board:
-            for cell in row:
-                f.write(f"{cell} ")
-            f.write("\n")
-        f.write("#"*20)
+        answer = "Answer to the problem with board size of "\
+            + f"N = {self.hints.dim}, and hints is as follows: "\
+            + "\n[\n"\
+            + " ".join([str(x) for x in self.hints.topHint]) + "\n"\
+            + " ".join([str(x) for x in self.hints.botHint]) + "\n"\
+            + " ".join([str(x) for x in self.hints.rightHint]) + "\n"\
+            + " ".join([str(x) for x in self.hints.leftHint])\
+            + "\n]\n\n" + "#"*20 + "\n"\
+            + "\n".join(
+                [" ".join([str(cell) for cell in row])
+                 for row in self.curBrd.board])\
+            + "\n" + "#"*20
+        f.write(answer)
         f.close()
 
     def checkResultWithCond(self) -> bool:

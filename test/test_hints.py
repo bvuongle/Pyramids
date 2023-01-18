@@ -81,6 +81,7 @@ def test_read_fr_file():
     mocker = mock.mock_open(read_data="0 0\n1 1\n2 2\n0 0\n")
     with mock.patch('builtins.open', mocker):
         newHints.getData('fake_dir')
+        mocker.assert_called_once_with('fake_dir', 'r')
     assert newHints.dim == 2
     assert newHints.topHint == [0, 0]
     assert newHints.botHint == [1, 1]
@@ -94,16 +95,19 @@ def test_read_fr_file_error_length():
     with mock.patch('builtins.open', mocker):
         with raises(LengthFileIncorrect):
             newHints.getData('fake_dir')
+        mocker.assert_called_once_with('fake_dir', 'r')
 
     mocker = mock.mock_open(read_data="1\n1\n1\n1\n1\n")
     with mock.patch('builtins.open', mocker):
         with raises(LengthFileIncorrect):
             newHints.getData('fake_dir')
+        mocker.assert_called_once_with('fake_dir', 'r')
 
     mocker = mock.mock_open(read_data="1 2 3\n1\n1\n1\n")
     with mock.patch('builtins.open', mocker):
         with raises(LengthFileIncorrect):
             newHints.getData('fake_dir')
+        mocker.assert_called_once_with('fake_dir', 'r')
 
 
 def test_read_fr_file_error_chars():
@@ -112,6 +116,7 @@ def test_read_fr_file_error_chars():
     with mock.patch('builtins.open', mocker):
         with raises(NonStandardChars):
             newHints.getData('fake_dir')
+        mocker.assert_called_once_with('fake_dir', 'r')
 
 
 def test_read_fr_file_error_out_range():
@@ -120,3 +125,4 @@ def test_read_fr_file_error_out_range():
     with mock.patch('builtins.open', mocker):
         with raises(OutsideRange):
             newHints.getData('fake_dir')
+        mocker.assert_called_once_with('fake_dir', 'r')
