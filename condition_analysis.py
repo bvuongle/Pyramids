@@ -1,26 +1,33 @@
 from board import Board
 from hints import HintsData
-from exception import NoSolutionError
+from exception import NoSolutionError, InsufficientData
 
 
 class CondBoard(Board):
-    def __init__(self, dim=0, board=[], base=[]):
+    def __init__(self, dim: int, board=[]):
         super().__init__(dim, board)
-        self.fillBoardWithValue(base)
+        self.fillBoardWithValue(list(range(1, dim+1)))
 
     @staticmethod
     def noSolutionCheck(hint: list):
-        cnt_H_min = cnt_H_max = 0
+        cnt_1 = cnt_H = 0
         for amount in hint:
             if amount == 1:
-                cnt_H_min += 1
+                cnt_1 += 1
             elif amount == len(hint):
-                cnt_H_max += 1
-        return cnt_H_min <= 1 and cnt_H_max <= 1
+                cnt_H += 1
+        return cnt_1 <= 1 and cnt_H <= 1
+
+    def checkMissingData(self, lst):
+        if len(lst) != self.dim:
+            return True
+        return False
 
     def setNdelValueCol(self, row, col, value) -> None:
-        # Set this value for cell at (row, column)
-        # and remove it from cell's list in the same column
+        """
+        Set this value for cell at (row, column)
+        and remove it from cell's list in the same column
+        """
         self.board[row][col] = [value]
         for otrCol in range(self.dim):
             if otrCol != col and value in self.board[row][otrCol]:
@@ -28,8 +35,10 @@ class CondBoard(Board):
         return None
 
     def setNdelValueRow(self, row, col, value) -> None:
-        # Set this value for cell at (row, column)
-        # and remove it from cell's list in the same row
+        """
+        Set this value for cell at (row, column)
+        and remove it from cell's list in the same row
+        """
         self.board[row][col] = [value]
         for otrRow in range(self.dim):
             if otrRow != row and value in self.board[otrRow][col]:
@@ -37,9 +46,10 @@ class CondBoard(Board):
         return None
 
     def topCond(self, topHint: list) -> None:
-        # Remember that you should loop col from 0 -> N-1, row = 0
+        if self.checkMissingData(topHint):
+            raise InsufficientData()
         if not self.noSolutionCheck(topHint):
-            raise NoSolutionError
+            raise NoSolutionError()
         for col, amount in enumerate(topHint):
             if amount == 0:
                 continue
@@ -57,9 +67,10 @@ class CondBoard(Board):
         return None
 
     def botCond(self, botHint: list) -> None:
-        # Remember that you should loop col from N-1 -> 0, row = N-1
+        if self.checkMissingData(botHint):
+            raise InsufficientData()
         if not self.noSolutionCheck(botHint):
-            raise NoSolutionError
+            raise NoSolutionError()
         for col, amount in enumerate(botHint):
             if amount == 0:
                 continue
@@ -78,15 +89,14 @@ class CondBoard(Board):
         return None
 
     def rightCond(self, rightHint: list) -> None:
-        # Remember that you should loop row from 0 -> N-1, col = 0
+        if self.checkMissingData(rightHint):
+            raise InsufficientData()
         if not self.noSolutionCheck(rightHint):
-            raise NoSolutionError
+            raise NoSolutionError()
         for row, amount in enumerate(rightHint):
             if amount == 0:
                 continue
-            elif amount == 0:
-                continue
-            if amount == 1:
+            elif amount == 1:
                 self.setNdelValueRow(row, 0, self.dim)
                 self.setNdelValueCol(row, 0, self.dim)
             elif amount == self.dim:
@@ -100,9 +110,10 @@ class CondBoard(Board):
         return None
 
     def leftCond(self, leftHint: list) -> None:
-        # Remember that you should loop row from N-1 -> 0, col = N-1
+        if self.checkMissingData(leftHint):
+            raise InsufficientData()
         if not self.noSolutionCheck(leftHint):
-            raise NoSolutionError
+            raise NoSolutionError()
         for row, amount in enumerate(leftHint):
             if amount == 0:
                 continue

@@ -1,5 +1,4 @@
 from hints import HintsData
-from condition_analysis import CondBoard
 from board_resolver import BoardResolver
 from exception import WrongDimension, LengthFileIncorrect
 from exception import NonStandardChars, NoSolutionError, OutsideRange
@@ -27,7 +26,7 @@ class PyramidsWindow(QMainWindow):
         self.ui = Ui_Piramidy()
         self.ui.setupUi(self)
         try:
-            self.resolver = BoardResolver()
+            self.prob = BoardResolver()
         except WrongDimension:
             self.showError(WrongDimension())
         self.showHome()
@@ -180,21 +179,14 @@ class PyramidsWindow(QMainWindow):
             return False
 
     def solve(self, hints: HintsData) -> None:
-        condBase = list(range(1, hints.dim+1))
-        self.resolver = BoardResolver(hints,
-                                      CondBoard(dim=hints.dim, base=condBase))
+        self.prob = BoardResolver(hints)
         try:
-            self.resolver.condBrd.analyzeBasicCond(self.resolver.hints)
+            self.prob.resolver()
         except NoSolutionError:
             self.showError(NoSolutionError())
             return None
-        self.resolver.backtracking(0, 0)
 
-        if self.resolver.flag == 0:
-            self.showError(NoSolutionError())
-            return None
-
-        self.setTableValue(self.ui.ansTable, self.resolver.curBrd.board)
+        self.setTableValue(self.ui.ansTable, self.prob.curBrd.board)
         self.ui.save_btn.setEnabled(True)
         return None
 

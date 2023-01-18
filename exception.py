@@ -33,3 +33,9 @@ class LengthFileIncorrect(Exception):
             "The length of the input data contained in the file is incorrect."
             "\n(too short or too long for the standard)\n"
             "Please choose another file to continue")
+
+
+class InsufficientData(Exception):
+    def __init__(self) -> None:
+        super().__init__("The input data is not enough"
+                         "to perform the operation.")

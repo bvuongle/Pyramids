@@ -31,7 +31,7 @@ def test_init_no_board_provided():
 
 def test_init_dimP_diff_dimB():
     with raises(WrongDimension):
-        assert Board(4, [[1, 2], [1, 2]]) == WrongDimension()
+        Board(4, [[1, 2], [1, 2]])
 
 
 def test_dim_setter():

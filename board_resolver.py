@@ -1,15 +1,16 @@
 from board import Board
 from hints import HintsData
 from condition_analysis import CondBoard
+from exception import NoSolutionError
 
 
 class BoardResolver():
-    def __init__(self, hints=HintsData(), condBrd=CondBoard()):
+    def __init__(self, hints=HintsData()):
         self.flag = 0
         self._curBrd = Board(dim=hints.dim)
         self._curBrd.fillBoardWithValue(0)
         self._hints = hints
-        self._condBrd = condBrd
+        self._condBrd = CondBoard(dim=hints.dim)
 
     @property
     def curBrd(self):
@@ -38,7 +39,7 @@ class BoardResolver():
         return self._condBrd
 
     @condBrd.setter
-    def condBrd(self, newCondBrd: CondBoard()):
+    def condBrd(self, newCondBrd):
         self._condBrd = newCondBrd
         return self._condBrd
 
@@ -132,3 +133,12 @@ class BoardResolver():
                 if self.flag == 1:
                     return self.curBrd
                 self.curBrd.board[row][col] = 0
+
+    def resolver(self):
+        try:
+            self.condBrd.analyzeBasicCond(self.hints)
+        except NoSolutionError:
+            raise NoSolutionError()
+        self.backtracking(0, 0)
+        if self.flag == 0:
+            raise NoSolutionError()
