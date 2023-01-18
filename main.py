@@ -1,13 +1,14 @@
 from hints import HintsData
 from condition_analysis import CondBoard
 from board_resolver import BoardResolver
+from exception import WrongDimension, LengthFileIncorrect
+from exception import NonStandardChars, NoSolutionError, OutsideRange
 from main_ui import Ui_Piramidy
 from error_ui import Ui_Error
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import QApplication, QMainWindow, QHeaderView
 from PyQt5.QtWidgets import QTableWidgetItem, QFileDialog, QDialog
 import sys
-import exception
 
 
 class ErrorDialog(QDialog):
@@ -27,8 +28,8 @@ class PyramidsWindow(QMainWindow):
         self.ui.setupUi(self)
         try:
             self.resolver = BoardResolver()
-        except exception.WrongDimension:
-            self.showError(exception.WrongDimension())
+        except WrongDimension:
+            self.showError(WrongDimension())
         self.showHome()
 
     @staticmethod
@@ -50,7 +51,7 @@ class PyramidsWindow(QMainWindow):
     def showSolve(self):
         self.resetBoard()
         self.ui.mainStack.setCurrentWidget(self.ui.solve)
-        self.ui.sizeBoard.valueChanged.connect(self.renewBoard)
+        self.ui.sizeBoard.valueChanged.connect(self.resetBoard)
         self.ui.reset_btn.clicked.connect(self.resetBoard)
         self.ui.run_btn.clicked.connect(self.getInputData)
         self.ui.openf_btn.clicked.connect(self.getDataFrFile)
@@ -83,6 +84,7 @@ class PyramidsWindow(QMainWindow):
 
     def clearAnsTable(self):
         self.ui.ansTable.clear()
+        self.ui.run_btn.setEnabled(True)
 
     def renewBoard(self):
         value = self.ui.sizeBoard.value()
@@ -114,6 +116,7 @@ class PyramidsWindow(QMainWindow):
 
     def resetBoard(self):
         self.ui.save_btn.setEnabled(False)
+        self.ui.run_btn.setEnabled(True)
         self.ui.hintTop.clear()
         self.ui.hintBot.clear()
         self.ui.hintRight.clear()
@@ -122,30 +125,22 @@ class PyramidsWindow(QMainWindow):
         self.renewBoard()
 
     def getInputData(self) -> bool:
-        topHint = []
-        botHint = []
-        rightHint = []
-        leftHint = []
+        self.ui.run_btn.setEnabled(False)
+        topHint, botHint, rightHint, leftHint = ([] for _ in range(4))
+        for i in range(self.ui.sizeBoard.value()):
+            topHint.append(self.ui.hintTop.item(0, i).text())
+            botHint.append(self.ui.hintBot.item(0, i).text())
+            rightHint.append(self.ui.hintRight.item(i, 0).text())
+            leftHint.append(self.ui.hintLeft.item(i, 0).text())
         try:
-            for i in range(self.ui.sizeBoard.value()):
-                topHint.append(int(self.ui.hintTop.item(0, i).text()))
-                botHint.append(int(self.ui.hintBot.item(0, i).text()))
-                rightHint.append(int(self.ui.hintRight.item(i, 0).text()))
-                leftHint.append(int(self.ui.hintLeft.item(i, 0).text()))
-        except ValueError:
-            self.showError(exception.NonStandardChars())
+            hints = HintsData(self.ui.sizeBoard.value(),
+                              topHint, botHint, rightHint, leftHint)
+        except NonStandardChars:
+            self.showError(NonStandardChars())
             return False
-
-        maxHintsVal = max(max(topHint), max(botHint),
-                          max(rightHint), max(leftHint))
-        minHintsVal = min(min(topHint), min(botHint),
-                          min(rightHint), min(leftHint))
-        if maxHintsVal not in range(0, self.ui.sizeBoard.value()+1) or \
-                minHintsVal not in range(0, self.ui.sizeBoard.value()+1):
-            self.showError(exception.OutsideRange())
+        except OutsideRange:
+            self.showError(OutsideRange())
             return False
-        hints = HintsData(self.ui.sizeBoard.value(),
-                          topHint, botHint, rightHint, leftHint)
         self.solve(hints)
         return True
 
@@ -157,13 +152,11 @@ class PyramidsWindow(QMainWindow):
         try:
             hints = HintsData()
             hints.getData(fname[0])
-        except exception.LengthFileIncorrect:
-            self.showError(exception.LengthFileIncorrect())
+        except LengthFileIncorrect:
+            self.showError(LengthFileIncorrect())
             return False
-        except exception.NonStandardChars:
-            self.showError(exception.NonStandardChars())
-            return False
-        except FileNotFoundError:
+        except NonStandardChars:
+            self.showError(NonStandardChars())
             return False
         self.pasteInputData(hints)
         return True
@@ -192,14 +185,13 @@ class PyramidsWindow(QMainWindow):
                                       CondBoard(dim=hints.dim, base=condBase))
         try:
             self.resolver.condBrd.analyzeBasicCond(self.resolver.hints)
-        except exception.NoSolutionError:
-            self.showError(exception.NoSolutionError())
+        except NoSolutionError:
+            self.showError(NoSolutionError())
             return None
-
         self.resolver.backtracking(0, 0)
 
         if self.resolver.flag == 0:
-            self.showError(exception.NoSolutionError())
+            self.showError(NoSolutionError())
             return None
 
         self.setTableValue(self.ui.ansTable, self.resolver.curBrd.board)

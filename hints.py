@@ -1,18 +1,39 @@
 from copy import deepcopy
-from exception import NonStandardChars, LengthFileIncorrect
+from exception import NonStandardChars, LengthFileIncorrect, OutsideRange
 
 
 class HintsData():
     def __init__(self, dim=0,
-                 topHint=[],
-                 botHint=[],
-                 rightHint=[],
-                 leftHint=[]):
-        self._dim = dim
-        self._topHint = topHint
-        self._botHint = botHint
-        self._rightHint = rightHint
-        self._leftHint = leftHint
+                 topHint=[], botHint=[],
+                 rightHint=[], leftHint=[]):
+        tmpDim = self.checkDim([topHint, botHint, rightHint, leftHint])
+        self._dim = tmpDim if tmpDim and dim != tmpDim else dim
+        self._topHint = self.checkHint(topHint)
+        self._botHint = self.checkHint(botHint)
+        self._rightHint = self.checkHint(rightHint)
+        self._leftHint = self.checkHint(leftHint)
+
+    @staticmethod
+    def checkDim(lists):
+        tmpDim = len(lists[0])
+        if len(lists[1]) != tmpDim or \
+                len(lists[2]) != tmpDim or \
+                len(lists[3]) != tmpDim:
+            raise LengthFileIncorrect()
+        return tmpDim
+
+    def checkHint(self, lst):
+        try:
+            validHint = [int(x) for x in lst]
+        except ValueError:
+            raise NonStandardChars()
+        if validHint:
+            maxVal = max(validHint)
+            minVal = min(validHint)
+            if maxVal not in range(0, self.dim+1) or \
+                    minVal not in range(0, self.dim+1):
+                raise OutsideRange()
+        return validHint
 
     @property
     def dim(self):
@@ -28,7 +49,7 @@ class HintsData():
 
     @topHint.setter
     def topHint(self, lst):
-        self._topHint = deepcopy(lst)
+        self._topHint = deepcopy(self.checkHint(lst))
 
     @property
     def botHint(self):
@@ -36,7 +57,7 @@ class HintsData():
 
     @botHint.setter
     def botHint(self, lst):
-        self._botHint = deepcopy(lst)
+        self._botHint = deepcopy(self.checkHint(lst))
 
     @property
     def rightHint(self):
@@ -44,7 +65,7 @@ class HintsData():
 
     @rightHint.setter
     def rightHint(self, lst):
-        self._rightHint = deepcopy(lst)
+        self._rightHint = deepcopy(self.checkHint(lst))
 
     @property
     def leftHint(self):
@@ -52,26 +73,21 @@ class HintsData():
 
     @leftHint.setter
     def leftHint(self, lst):
-        self._leftHint = deepcopy(lst)
+        self._leftHint = deepcopy(self.checkHint(lst))
 
     def getData(self, dir):
         f = open(dir, 'r')
         lines = f.read().splitlines()
-        # Each input file is only allowed to contain 4 lines,
-        # representing the hint for the top, bottom, right and left
+        """
+        Each input file is only allowed to contain 4 lines,
+        representing the hint for the top, bottom, right and left
+        """
         if len(lines) != 4:
             raise LengthFileIncorrect()
-        tmpDim = len(lines[0].split(" "))
-        if len(lines[1].split(" ")) != tmpDim or \
-                len(lines[2].split(" ")) != tmpDim or \
-                len(lines[3].split(" ")) != tmpDim:
-            raise LengthFileIncorrect()
-        try:
-            self.dim = tmpDim
-            self.topHint = [int(x) for x in lines[0].split(" ")]
-            self.botHint = [int(x) for x in lines[1].split(" ")]
-            self.rightHint = [int(x) for x in lines[2].split(" ")]
-            self.leftHint = [int(x) for x in lines[3].split(" ")]
-        except ValueError:
-            raise NonStandardChars()
+        self.dim = self.checkDim([line.split(" ") for line in lines])
+        self.topHint = lines[0].split(" ")
+        self.botHint = lines[1].split(" ")
+        self.rightHint = lines[2].split(" ")
+        self.leftHint = lines[3].split(" ")
+
         f.close()
