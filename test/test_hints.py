@@ -27,7 +27,7 @@ def test_init_hints_error_length():
                          topHint=[0, 0],
                          botHint=[1, 1, 3],
                          rightHint=[2, 2],
-                         leftHint=[3, 3]) == str(LengthFileIncorrect())
+                         leftHint=[3, 3]) == LengthFileIncorrect()
     assert HintsData(dim=9,
                      topHint=[1],
                      botHint=[1],
@@ -41,7 +41,7 @@ def test_init_hints_error_chars():
                          topHint=['a'],
                          botHint=[1],
                          rightHint=[1],
-                         leftHint=[1]).dim == str(NonStandardChars())
+                         leftHint=[1]).dim == NonStandardChars()
 
 
 def test_init_hints_error_out_range():
@@ -93,17 +93,17 @@ def test_read_fr_file_error_length():
     mocker = mock.mock_open(read_data="")
     with mock.patch('builtins.open', mocker):
         with raises(LengthFileIncorrect):
-            assert newHints.getData('fake_dir') == str(LengthFileIncorrect())
+            assert newHints.getData('fake_dir') == LengthFileIncorrect()
 
     mocker = mock.mock_open(read_data="1\n1\n1\n1\n1\n")
     with mock.patch('builtins.open', mocker):
         with raises(LengthFileIncorrect):
-            assert newHints.getData('fake_dir') == str(LengthFileIncorrect())
+            assert newHints.getData('fake_dir') == LengthFileIncorrect()
 
     mocker = mock.mock_open(read_data="1 2 3\n1\n1\n1\n")
     with mock.patch('builtins.open', mocker):
         with raises(LengthFileIncorrect):
-            assert newHints.getData('fake_dir') == str(LengthFileIncorrect())
+            assert newHints.getData('fake_dir') == LengthFileIncorrect()
 
 
 def test_read_fr_file_error_chars():
@@ -111,4 +111,12 @@ def test_read_fr_file_error_chars():
     mocker = mock.mock_open(read_data="0 0\n1 1\n2 a\n3 3\n")
     with mock.patch('builtins.open', mocker):
         with raises(NonStandardChars):
-            assert newHints.getData('fake_dir') == str(NonStandardChars())
+            assert newHints.getData('fake_dir') == NonStandardChars()
+
+
+def test_read_fr_file_error_out_range():
+    newHints = HintsData()
+    mocker = mock.mock_open(read_data="0 0\n1 1\n2 2\n3 3\n")
+    with mock.patch('builtins.open', mocker):
+        with raises(OutsideRange):
+            assert newHints.getData('fake_dir') == OutsideRange()
