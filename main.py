@@ -4,7 +4,7 @@ from exception import WrongDimension, LengthFileIncorrect
 from exception import NonStandardChars, NoSolutionError, OutsideRange
 from main_ui import Ui_Piramidy
 from error_ui import Ui_Error
-from PyQt5 import QtCore
+from PyQt5 import QtCore, QtGui
 from PyQt5.QtWidgets import QApplication, QMainWindow, QHeaderView
 from PyQt5.QtWidgets import QTableWidgetItem, QFileDialog, QDialog
 import sys
@@ -15,6 +15,7 @@ class ErrorDialog(QDialog):
         super().__init__(parent)
         self.ui = Ui_Error()
         self.ui.setupUi(self)
+        self.setWindowIcon(QtGui.QIcon("./icon/error_icon.png"))
 
     def closeDialog(self):
         self.close()
@@ -25,6 +26,7 @@ class PyramidsWindow(QMainWindow):
         super().__init__(parent)
         self.ui = Ui_Piramidy()
         self.ui.setupUi(self)
+        self.setWindowIcon(QtGui.QIcon("./icon/main_icon.png"))
         try:
             self.prob = BoardResolver()
         except WrongDimension:
