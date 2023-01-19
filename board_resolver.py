@@ -51,7 +51,10 @@ class BoardResolver():
     def saveData(self, dir):
         if self.flag == 0:
             return None
-        f = open(dir, 'w')
+        try:
+            f = open(dir, 'w')
+        except FileNotFoundError:
+            raise FileNotFoundError()
         answer = "Answer to the problem with board size of "\
             + f"N = {self.hints.dim}, and hints is as follows: "\
             + "\n[\n"\

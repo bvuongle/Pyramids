@@ -37,8 +37,7 @@ class PyramidsWindow(QMainWindow):
             for col in range(table.columnCount()):
                 itemValue = str(data[row][col])
                 table.setItem(row, col, QTableWidgetItem(itemValue))
-                table.item(row, col).setTextAlignment(QtCore.Qt.AlignVCenter
-                                                      | QtCore.Qt.AlignHCenter)
+                table.item(row, col).setTextAlignment(QtCore.Qt.AlignCenter)
 
     def showHome(self):
         self.ui.mainStack.setCurrentWidget(self.ui.home)
@@ -71,7 +70,7 @@ class PyramidsWindow(QMainWindow):
 
     def showError(self, error):
         errDlg = ErrorDialog(self)
-        errDlg.ui.noti1.setText(str(error))
+        errDlg.ui.msg.setText(str(error))
         errDlg.show()
         errDlg.ui.reset_btn.clicked.connect(self.resetBoard)
         errDlg.ui.reset_btn.clicked.connect(errDlg.closeDialog)
@@ -140,6 +139,8 @@ class PyramidsWindow(QMainWindow):
         except OutsideRange:
             self.showError(OutsideRange())
             return False
+        except FileNotFoundError:
+            return False
         self.solve(hints)
         return True
 
@@ -156,6 +157,8 @@ class PyramidsWindow(QMainWindow):
             return False
         except NonStandardChars:
             self.showError(NonStandardChars())
+            return False
+        except FileNotFoundError:
             return False
         self.pasteInputData(hints)
         return True

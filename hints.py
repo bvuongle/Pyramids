@@ -76,7 +76,10 @@ class HintsData():
         self._leftHint = deepcopy(self.checkHint(lst))
 
     def getData(self, dir):
-        f = open(dir, 'r')
+        try:
+            f = open(dir, 'r')
+        except FileNotFoundError:
+            raise FileNotFoundError()
         lines = f.read().splitlines()
         """
         Each input file is only allowed to contain 4 lines,

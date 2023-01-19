@@ -6,43 +6,56 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>500</width>
+    <height>200</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Warning</string>
   </property>
   <widget class="QStackedWidget" name="stackedWidget">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>400</width>
-     <height>300</height>
+     <width>500</width>
+     <height>200</height>
     </rect>
    </property>
-   <widget class="QWidget" name="no_sol">
-    <widget class="QLabel" name="noti1">
+   <widget class="QWidget" name="errormsg">
+    <widget class="QLabel" name="msg">
      <property name="geometry">
       <rect>
-       <x>50</x>
-       <y>50</y>
-       <width>311</width>
+       <x>20</x>
+       <y>20</y>
+       <width>451</width>
        <height>121</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;This problem has no solution. &lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Please try again by checking the input or resetting the board&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string/>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
      </property>
     </widget>
     <widget class="QPushButton" name="ok_btn">
      <property name="geometry">
       <rect>
-       <x>150</x>
-       <y>230</y>
-       <width>93</width>
-       <height>28</height>
+       <x>330</x>
+       <y>160</y>
+       <width>70</width>
+       <height>30</height>
       </rect>
      </property>
      <property name="text">
@@ -52,10 +65,10 @@
     <widget class="QPushButton" name="reset_btn">
      <property name="geometry">
       <rect>
-       <x>270</x>
-       <y>230</y>
-       <width>93</width>
-       <height>28</height>
+       <x>420</x>
+       <y>160</y>
+       <width>70</width>
+       <height>30</height>
       </rect>
      </property>
      <property name="text">
