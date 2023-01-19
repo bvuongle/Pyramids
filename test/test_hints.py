@@ -76,6 +76,11 @@ def test_set_hints_data():
     assert id(newHints.leftHint) != id(left)
 
 
+def test_file_not_found():
+    with raises(FileNotFoundError):
+        HintsData().getData("smth.txt")
+
+
 def test_read_fr_file():
     newHints = HintsData()
     mocker = mock.mock_open(read_data="0 0\n1 1\n2 2\n0 0\n")

@@ -65,6 +65,13 @@ def test_resolver_not_solvable_flag_trigger():
     assert prob.flag == 0
 
 
+def test_file_not_found():
+    prob = BoardResolver()
+    prob.flag = 1
+    with raises(FileNotFoundError):
+        prob.saveData("")
+
+
 def test_saveData():
     content = "Answer to the problem with board size of "\
               "N = 4, and hints is as follows: \n"\
