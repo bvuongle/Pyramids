@@ -59,6 +59,14 @@ Call this conditional board **condBoard**, with each cell being **a list** conta
 ### Documentation
 Documentation for the project, describing the functionality and composition of the methods can be found [here](docs/documentation/index.html).
 
+Note: If the link doesn't work, you can find the documentation at docs/documentation/index.html
+
+Note: You can create new documentation file with the following command:
+
+sphinx-build -b html ./.sphinx ./docsGen
+
+New documentation file will be locate in /docsGen/index.html
+
 ### The core of the project
 + Backtracking algorithm
 
