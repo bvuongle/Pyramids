@@ -2,12 +2,14 @@ from hints import HintsData
 from board_resolver import BoardResolver
 from exception import WrongDimension, LengthFileIncorrect
 from exception import NonStandardChars, NoSolutionError, OutsideRange
+import argparse
 from main_ui import Ui_Piramidy
 from error_ui import Ui_Error
 from PyQt5 import QtCore, QtGui
 from PyQt5.QtWidgets import QApplication, QMainWindow, QHeaderView
 from PyQt5.QtWidgets import QTableWidgetItem, QFileDialog, QDialog
 import sys
+import os
 
 
 class ErrorDialog(QDialog):
@@ -179,6 +181,7 @@ class PyramidsWindow(QMainWindow):
         fname = QFileDialog.getSaveFileName(self, "Save File")
         try:
             self.prob.saveData(fname[0])
+            os.startfile(fname[0])
             return True
         except FileNotFoundError:
             return False
@@ -196,11 +199,32 @@ class PyramidsWindow(QMainWindow):
         return None
 
 
+def rapidSolver(dir: str) -> BoardResolver:
+    hints = HintsData()
+    hints.getData(dir)
+    prob = BoardResolver(hints)
+    prob.resolver()
+    return prob
+
+
 def guiMain(args):
-    app = QApplication(args)
-    window = PyramidsWindow()
-    window.show()
-    return app.exec_()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-i", "--input", nargs="+",  help="Path to input file")
+    parser.add_argument("-o", "--output", help="Path to output file")
+    arguments = parser.parse_args()
+    if arguments.input:
+        path = os.path.join(os.path.abspath(os.path.join(
+                                                    os.getcwd(),
+                                                    os.pardir)
+                                            ),
+                            arguments.input[0])
+        if arguments.output:
+            rapidSolver(path).saveData(arguments.output)
+    else:
+        app = QApplication(args)
+        window = PyramidsWindow()
+        window.show()
+        return app.exec_()
 
 
 if __name__ == "__main__":
