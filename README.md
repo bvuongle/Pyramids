@@ -57,18 +57,7 @@ Call this conditional board **condBoard**, with each cell being **a list** conta
 + `ui` - *Folder containing files saved from QtDesigner*
 
 ### Documentation
-Documentation for the project, describing the functionality and composition of the methods can be found [here](documentation.pdf).
-
-Note: If the link doesn't work, you can find the documentation at docs/documentation/index.html
-
-Note: You can create new documentation file with the following command:
-
-```python
-sphinx-build -b html ./.sphinx ./docsGen
-```
-
-
-New documentation file will be locate in /docsGen/index.html
+Documentation for the project, describing the functionality and composition of the methods can be found [here](docs/documentation/documentation.pdf).
 
 ### The core of the project
 + Backtracking algorithm
