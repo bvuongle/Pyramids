@@ -1,0 +1,67 @@
+\indexentry{module@\spxentry{module}!board@\spxentry{board}|hyperpage}{1}
+\indexentry{board@\spxentry{board}!module@\spxentry{module}|hyperpage}{1}
+\indexentry{Board (class in board)@\spxentry{Board}\spxextra{class in board}|hyperpage}{1}
+\indexentry{checkDimNBoardRelation() (board.Board method)@\spxentry{checkDimNBoardRelation()}\spxextra{board.Board method}|hyperpage}{1}
+\indexentry{dim (board.Board property)@\spxentry{dim}\spxextra{board.Board property}|hyperpage}{1}
+\indexentry{board (board.Board property)@\spxentry{board}\spxextra{board.Board property}|hyperpage}{1}
+\indexentry{fillBoardWithValue() (board.Board method)@\spxentry{fillBoardWithValue()}\spxextra{board.Board method}|hyperpage}{1}
+\indexentry{module@\spxentry{module}!hints@\spxentry{hints}|hyperpage}{2}
+\indexentry{hints@\spxentry{hints}!module@\spxentry{module}|hyperpage}{2}
+\indexentry{HintsData (class in hints)@\spxentry{HintsData}\spxextra{class in hints}|hyperpage}{2}
+\indexentry{checkDim() (hints.HintsData static method)@\spxentry{checkDim()}\spxextra{hints.HintsData static method}|hyperpage}{2}
+\indexentry{checkHint() (hints.HintsData method)@\spxentry{checkHint()}\spxextra{hints.HintsData method}|hyperpage}{2}
+\indexentry{dim (hints.HintsData property)@\spxentry{dim}\spxextra{hints.HintsData property}|hyperpage}{2}
+\indexentry{topHint (hints.HintsData property)@\spxentry{topHint}\spxextra{hints.HintsData property}|hyperpage}{2}
+\indexentry{botHint (hints.HintsData property)@\spxentry{botHint}\spxextra{hints.HintsData property}|hyperpage}{2}
+\indexentry{rightHint (hints.HintsData property)@\spxentry{rightHint}\spxextra{hints.HintsData property}|hyperpage}{3}
+\indexentry{leftHint (hints.HintsData property)@\spxentry{leftHint}\spxextra{hints.HintsData property}|hyperpage}{3}
+\indexentry{getData() (hints.HintsData method)@\spxentry{getData()}\spxextra{hints.HintsData method}|hyperpage}{3}
+\indexentry{module@\spxentry{module}!condition\_analysis@\spxentry{condition\_analysis}|hyperpage}{3}
+\indexentry{condition\_analysis@\spxentry{condition\_analysis}!module@\spxentry{module}|hyperpage}{3}
+\indexentry{CondBoard (class in condition\_analysis)@\spxentry{CondBoard}\spxextra{class in condition\_analysis}|hyperpage}{3}
+\indexentry{noSolutionCheck() (condition\_analysis.CondBoard static method)@\spxentry{noSolutionCheck()}\spxextra{condition\_analysis.CondBoard static method}|hyperpage}{3}
+\indexentry{checkMissingData() (condition\_analysis.CondBoard method)@\spxentry{checkMissingData()}\spxextra{condition\_analysis.CondBoard method}|hyperpage}{4}
+\indexentry{setNdelValueCol() (condition\_analysis.CondBoard method)@\spxentry{setNdelValueCol()}\spxextra{condition\_analysis.CondBoard method}|hyperpage}{4}
+\indexentry{setNdelValueRow() (condition\_analysis.CondBoard method)@\spxentry{setNdelValueRow()}\spxextra{condition\_analysis.CondBoard method}|hyperpage}{4}
+\indexentry{topCond() (condition\_analysis.CondBoard method)@\spxentry{topCond()}\spxextra{condition\_analysis.CondBoard method}|hyperpage}{4}
+\indexentry{botCond() (condition\_analysis.CondBoard method)@\spxentry{botCond()}\spxextra{condition\_analysis.CondBoard method}|hyperpage}{4}
+\indexentry{rightCond() (condition\_analysis.CondBoard method)@\spxentry{rightCond()}\spxextra{condition\_analysis.CondBoard method}|hyperpage}{4}
+\indexentry{leftCond() (condition\_analysis.CondBoard method)@\spxentry{leftCond()}\spxextra{condition\_analysis.CondBoard method}|hyperpage}{5}
+\indexentry{remRedundantCond() (condition\_analysis.CondBoard method)@\spxentry{remRedundantCond()}\spxextra{condition\_analysis.CondBoard method}|hyperpage}{5}
+\indexentry{analyzeBasicCond() (condition\_analysis.CondBoard method)@\spxentry{analyzeBasicCond()}\spxextra{condition\_analysis.CondBoard method}|hyperpage}{5}
+\indexentry{module@\spxentry{module}!board\_resolver@\spxentry{board\_resolver}|hyperpage}{5}
+\indexentry{board\_resolver@\spxentry{board\_resolver}!module@\spxentry{module}|hyperpage}{5}
+\indexentry{BoardResolver (class in board\_resolver)@\spxentry{BoardResolver}\spxextra{class in board\_resolver}|hyperpage}{5}
+\indexentry{flag (board\_resolver.BoardResolver property)@\spxentry{flag}\spxextra{board\_resolver.BoardResolver property}|hyperpage}{5}
+\indexentry{curBrd (board\_resolver.BoardResolver property)@\spxentry{curBrd}\spxextra{board\_resolver.BoardResolver property}|hyperpage}{5}
+\indexentry{condBrd (board\_resolver.BoardResolver property)@\spxentry{condBrd}\spxextra{board\_resolver.BoardResolver property}|hyperpage}{5}
+\indexentry{hints (board\_resolver.BoardResolver property)@\spxentry{hints}\spxextra{board\_resolver.BoardResolver property}|hyperpage}{6}
+\indexentry{getRow() (board\_resolver.BoardResolver static method)@\spxentry{getRow()}\spxextra{board\_resolver.BoardResolver static method}|hyperpage}{6}
+\indexentry{getCol() (board\_resolver.BoardResolver static method)@\spxentry{getCol()}\spxextra{board\_resolver.BoardResolver static method}|hyperpage}{6}
+\indexentry{numVisiblePyramids() (board\_resolver.BoardResolver static method)@\spxentry{numVisiblePyramids()}\spxextra{board\_resolver.BoardResolver static method}|hyperpage}{6}
+\indexentry{saveData() (board\_resolver.BoardResolver method)@\spxentry{saveData()}\spxextra{board\_resolver.BoardResolver method}|hyperpage}{6}
+\indexentry{checkResultWithCond() (board\_resolver.BoardResolver method)@\spxentry{checkResultWithCond()}\spxextra{board\_resolver.BoardResolver method}|hyperpage}{7}
+\indexentry{backtracking() (board\_resolver.BoardResolver method)@\spxentry{backtracking()}\spxextra{board\_resolver.BoardResolver method}|hyperpage}{7}
+\indexentry{resolver() (board\_resolver.BoardResolver method)@\spxentry{resolver()}\spxextra{board\_resolver.BoardResolver method}|hyperpage}{7}
+\indexentry{module@\spxentry{module}!main@\spxentry{main}|hyperpage}{7}
+\indexentry{main@\spxentry{main}!module@\spxentry{module}|hyperpage}{7}
+\indexentry{ErrorDialog (class in main)@\spxentry{ErrorDialog}\spxextra{class in main}|hyperpage}{7}
+\indexentry{closeDialog() (main.ErrorDialog method)@\spxentry{closeDialog()}\spxextra{main.ErrorDialog method}|hyperpage}{7}
+\indexentry{PyramidsWindow (class in main)@\spxentry{PyramidsWindow}\spxextra{class in main}|hyperpage}{7}
+\indexentry{setTableValue() (main.PyramidsWindow static method)@\spxentry{setTableValue()}\spxextra{main.PyramidsWindow static method}|hyperpage}{7}
+\indexentry{showHome() (main.PyramidsWindow method)@\spxentry{showHome()}\spxextra{main.PyramidsWindow method}|hyperpage}{7}
+\indexentry{showSolve() (main.PyramidsWindow method)@\spxentry{showSolve()}\spxextra{main.PyramidsWindow method}|hyperpage}{7}
+\indexentry{showHelp() (main.PyramidsWindow method)@\spxentry{showHelp()}\spxextra{main.PyramidsWindow method}|hyperpage}{7}
+\indexentry{showAbout() (main.PyramidsWindow method)@\spxentry{showAbout()}\spxextra{main.PyramidsWindow method}|hyperpage}{7}
+\indexentry{showError() (main.PyramidsWindow method)@\spxentry{showError()}\spxextra{main.PyramidsWindow method}|hyperpage}{7}
+\indexentry{exitProg() (main.PyramidsWindow method)@\spxentry{exitProg()}\spxextra{main.PyramidsWindow method}|hyperpage}{8}
+\indexentry{clearAnsTable() (main.PyramidsWindow method)@\spxentry{clearAnsTable()}\spxextra{main.PyramidsWindow method}|hyperpage}{8}
+\indexentry{renewBoard() (main.PyramidsWindow method)@\spxentry{renewBoard()}\spxextra{main.PyramidsWindow method}|hyperpage}{8}
+\indexentry{resetBoard() (main.PyramidsWindow method)@\spxentry{resetBoard()}\spxextra{main.PyramidsWindow method}|hyperpage}{8}
+\indexentry{getInputData() (main.PyramidsWindow method)@\spxentry{getInputData()}\spxextra{main.PyramidsWindow method}|hyperpage}{8}
+\indexentry{getDataFrFile() (main.PyramidsWindow method)@\spxentry{getDataFrFile()}\spxextra{main.PyramidsWindow method}|hyperpage}{8}
+\indexentry{pasteInputData() (main.PyramidsWindow method)@\spxentry{pasteInputData()}\spxextra{main.PyramidsWindow method}|hyperpage}{8}
+\indexentry{saveDataToFile() (main.PyramidsWindow method)@\spxentry{saveDataToFile()}\spxextra{main.PyramidsWindow method}|hyperpage}{8}
+\indexentry{solve() (main.PyramidsWindow method)@\spxentry{solve()}\spxextra{main.PyramidsWindow method}|hyperpage}{8}
+\indexentry{rapidSolver() (in module main)@\spxentry{rapidSolver()}\spxextra{in module main}|hyperpage}{8}
+\indexentry{guiMain() (in module main)@\spxentry{guiMain()}\spxextra{in module main}|hyperpage}{8}

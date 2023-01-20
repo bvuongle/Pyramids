@@ -57,7 +57,7 @@ Call this conditional board **condBoard**, with each cell being **a list** conta
 + `ui` - *Folder containing files saved from QtDesigner*
 
 ### Documentation
-Documentation for the project, describing the functionality and composition of the methods can be found [here](docs/documentation/index.html).
+Documentation for the project, describing the functionality and composition of the methods can be found [here](documentation.pdf).
 
 Note: If the link doesn't work, you can find the documentation at docs/documentation/index.html
 

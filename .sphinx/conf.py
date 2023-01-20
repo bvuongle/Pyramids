@@ -22,7 +22,6 @@ author = 'bvuongle'
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
-    "sphinx_mdinclude",
     "sphinx.ext.autodoc",
     "sphinx.ext.napoleon"
 ]
