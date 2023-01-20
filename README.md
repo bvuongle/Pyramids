@@ -17,7 +17,7 @@ This program solves the problem of building pyramids on a board using [**backtra
 1. This configuration is correct for the given conditions of the input data, which are indicators of how many pyramids can be seen from a given position.
 2. This configuration is correct for the conditions that each row and each column contains N pyramids of different heights.
 
-We can use **backtracking algorithm** to generate all possible configurations of the NxN board. Each cell in the board can take a value from 1 to N, or it can be understood that for a value of a cell there are N possible cases. There are a total of **N^2^** cells, resulting in the algorithm being able to **generate up to (N^N^)^2^ configurations.**
+We can use **backtracking algorithm** to generate all possible configurations of the NxN board. Each cell in the board can take a value from 1 to N, or it can be understood that for a value of a cell there are N possible cases. There are a total of **N<sup>2** cells, resulting in the algorithm being able to **generate up to (N^N^)^2^ configurations.**
 
 **For the first condition**, we can divide the above indicators into *4 types*:
 1. **topHint:** Hint at the top of the board applies to the columns viewed from the top.
@@ -60,7 +60,7 @@ Documentation for the project, describing the functionality and composition of t
 ### The core of the project
 + Backtracking algorithm
 
-The algorithm will go to each cell from left to right, top to bottom, using a recursive method. As it reaches each cell, it tries to put values in that cell. When it reaches the last cell of the table, it will call the method to check the accuracy of the result. If the result is not correct, it will go back to the previous cell and try the new configuration.
+This method will go to each cell from left to right, top to bottom, using a recursive method. As it reaches each cell, it tries to put values in that cell. When it reaches the last cell of the table, it will call the method to check the accuracy of the result. If the result is not correct, it will go back to the previous cell and try the new configuration.
 ```python
 def backtracking(self, row: int, col: int):
         if row == self.curBrd.dim-1 and col > self.curBrd.dim-1:
@@ -85,7 +85,7 @@ def backtracking(self, row: int, col: int):
 
 + Result check method
 
-This algorithm splits the existing configuration data and contrasts it with the input data to ensure that the correct result is found.
+This method splits the existing configuration data and contrasts it with the input data to ensure that the correct result is found.
 ```python
 def checkResultWithCond(self) -> bool:
         for idx in range(0, self.hints.dim):
