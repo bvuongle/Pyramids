@@ -63,7 +63,10 @@ Note: If the link doesn't work, you can find the documentation at docs/documenta
 
 Note: You can create new documentation file with the following command:
 
+```python
 sphinx-build -b html ./.sphinx ./docsGen
+```
+
 
 New documentation file will be locate in /docsGen/index.html
 
