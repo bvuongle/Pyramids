@@ -25,7 +25,9 @@ We can use **backtracking algorithm** to generate all possible configurations of
 3. **rightHint:** Hint on the right side of the board applies to rows viewed from the right.
 4. **leftHint:** Hint on the left side of the board applies to rows viewed from the left.
 
-**For the second condition**, we will look at the moment when the algorithm reaches cell (i, j) of the board. By default, cell(i, j) can take values from 1 to N, we call this set **fullSet**. We create two more sets, ***rowSet** - the set of current values on row i* and ***colSet** - the set of current values on column j*. When taking fullSet - rowSet - colSet, we get **remainSet** - set of values that cell(i, j) can actually take without violating the second condition. Because of this condition, the number of configurations that the algorithm can generate is significantly reduced to **N<sup>1</sup>(N-1<sup>2</sup>(N-2)<sup>3</sup>...1<sup>N</sup>.**
+**For the second condition**, we will look at the moment when the algorithm reaches cell (i, j) of the board. By default, cell(i, j) can take values from 1 to N, we call this set **fullSet**. We create two more sets, ***rowSet** - the set of current values on row i* and ***colSet** - the set of current values on column j*. When taking fullSet - rowSet - colSet, we get **remainSet** - set of values that cell(i, j) can actually take without violating the second condition. Because of this condition, the number of configurations that the algorithm can generate is significantly reduced to:
+
+**N<sup>1</sup>(N-1<sup>2</sup>(N-2)<sup>3</sup>...1<sup>N</sup>.**
 
 For each board configuration created that satisfies the second condition, we will match it with the values of the four indicator types. If all match, we will return the correct configuration and stop the algorithm. (to avoid the algorithm continue to generate configuration and consume memory)
 
