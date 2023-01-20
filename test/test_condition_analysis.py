@@ -1,10 +1,7 @@
-import sys
-import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from condition_analysis import CondBoard  # noqa: E402
-from hints import HintsData  # noqa: E402
-from exception import NoSolutionError, InsufficientData  # noqa: E402
-from pytest import raises  # noqa: E402
+from condition_analysis import CondBoard
+from hints import HintsData
+from exception import NoSolutionError, InsufficientData
+from pytest import raises
 
 
 def test_init_condBrd():

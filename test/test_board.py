@@ -1,9 +1,6 @@
-import sys
-import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from board import Board  # noqa: E402
-from exception import WrongDimension  # noqa: E402
-from pytest import raises  # noqa: E402
+from board import Board
+from exception import WrongDimension
+from pytest import raises
 
 
 def test_init_board():

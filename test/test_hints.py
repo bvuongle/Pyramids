@@ -1,11 +1,8 @@
-import sys
-import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from hints import HintsData  # noqa: E402
-from exception import NonStandardChars, LengthFileIncorrect  # noqa: E402
-from exception import OutsideRange  # noqa: E402
-import mock  # noqa: E402
-from pytest import raises  # noqa: E402
+from hints import HintsData
+from exception import NonStandardChars, LengthFileIncorrect
+from exception import OutsideRange
+import mock
+from pytest import raises
 
 
 def test_init_hints():

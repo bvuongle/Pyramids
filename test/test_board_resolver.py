@@ -1,11 +1,8 @@
-import sys
-import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from board_resolver import BoardResolver  # noqa: E402
-from hints import HintsData  # noqa: E402
-from exception import NoSolutionError  # noqa: E402
-from pytest import raises  # noqa: E402
-import mock  # noqa: E402
+from board_resolver import BoardResolver
+from hints import HintsData
+from exception import NoSolutionError
+from pytest import raises
+import mock
 
 
 def test_init_board_resolver():
