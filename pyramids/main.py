@@ -13,6 +13,8 @@ import os
 
 
 class ErrorDialog(QDialog):
+    """Error message interface
+    """
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
         self.ui = Ui_Error()
@@ -24,6 +26,8 @@ class ErrorDialog(QDialog):
 
 
 class PyramidsWindow(QMainWindow):
+    """The main interface of the GUI
+    """
     def __init__(self, parent=None):
         super().__init__(parent)
         self.ui = Ui_Piramidy()
@@ -44,6 +48,8 @@ class PyramidsWindow(QMainWindow):
                 table.item(row, col).setTextAlignment(QtCore.Qt.AlignCenter)
 
     def showHome(self):
+        """Display home screen interface
+        """
         self.ui.mainStack.setCurrentWidget(self.ui.home)
         self.ui.start_btn.clicked.connect(self.showSolve)
         self.ui.help_btn.clicked.connect(self.showHelp)
@@ -51,6 +57,8 @@ class PyramidsWindow(QMainWindow):
         self.ui.exit_btn.clicked.connect(self.exitProg)
 
     def showSolve(self):
+        """Display solve screen interface
+        """
         self.resetBoard()
         self.ui.mainStack.setCurrentWidget(self.ui.solve)
         self.ui.sizeBoard.valueChanged.connect(self.resetBoard)
@@ -65,14 +73,23 @@ class PyramidsWindow(QMainWindow):
         self.ui.hintLeft.itemChanged.connect(self.clearAnsTable)
 
     def showHelp(self):
+        """Display help screen interface
+        """
         self.ui.mainStack.setCurrentWidget(self.ui.help)
         self.ui.returnH_btn.clicked.connect(self.showHome)
 
     def showAbout(self):
+        """Display about screen interface
+        """
         self.ui.mainStack.setCurrentWidget(self.ui.about)
         self.ui.returnA_btn.clicked.connect(self.showHome)
 
     def showError(self, error):
+        """Display error screen interface
+
+        :param error: type of error
+        :type error: Exception
+        """
         errDlg = ErrorDialog(self)
         errDlg.ui.msg.setText(str(error))
         errDlg.show()
@@ -89,6 +106,9 @@ class PyramidsWindow(QMainWindow):
         self.ui.run_btn.setEnabled(True)
 
     def renewBoard(self):
+        """Change the size of the board display interface
+        according to the size selected by the user
+        """
         value = self.ui.sizeBoard.value()
         top = self.ui.hintTop
         top.setColumnCount(value)
@@ -117,6 +137,8 @@ class PyramidsWindow(QMainWindow):
         ans.verticalHeader().setSectionResizeMode(QHeaderView.Stretch)
 
     def resetBoard(self):
+        """Reset all solve screen interface to default
+        """
         self.ui.save_btn.setEnabled(False)
         self.ui.run_btn.setEnabled(True)
         self.ui.hintTop.clear()
@@ -127,6 +149,9 @@ class PyramidsWindow(QMainWindow):
         self.renewBoard()
 
     def getInputData(self) -> bool:
+        """Read input data entered from the user through the GUI
+        and run the method to solve it.
+        """
         self.ui.run_btn.setEnabled(False)
         topHint, botHint, rightHint, leftHint = ([] for _ in range(4))
         for i in range(self.ui.sizeBoard.value()):
@@ -149,6 +174,8 @@ class PyramidsWindow(QMainWindow):
         return True
 
     def getDataFrFile(self) -> bool:
+        """Read input data from file and display it on GUI
+        """
         self.resetBoard()
         fname = QFileDialog.getOpenFileName(self, "Open File", "./",
                                             "Text Files(*.txt)")
@@ -168,6 +195,8 @@ class PyramidsWindow(QMainWindow):
         return True
 
     def pasteInputData(self, hints: HintsData):
+        """Display input datasets to GUI
+        """
         self.ui.sizeBoard.setValue(hints.dim)
         self.renewBoard()
         self.setTableValue(self.ui.hintTop, [hints.topHint])
@@ -178,6 +207,8 @@ class PyramidsWindow(QMainWindow):
                            [[x] for x in hints.leftHint])
 
     def saveDataToFile(self) -> bool:
+        """Save the result (if exists) to file
+        """
         fname = QFileDialog.getSaveFileName(self, "Save File")
         try:
             self.prob.saveData(fname[0])
@@ -187,6 +218,12 @@ class PyramidsWindow(QMainWindow):
             return False
 
     def solve(self, hints: HintsData) -> None:
+        """Method solves the problem and prints it to the GUI.
+        This method receives input data read from the GUI
+
+        :param hints: Input data read from GUI
+        :type hints: HintsData
+        """
         self.prob = BoardResolver(hints)
         try:
             self.prob.resolver()
@@ -200,6 +237,14 @@ class PyramidsWindow(QMainWindow):
 
 
 def rapidSolver(dir: str) -> BoardResolver:
+    """Method used to solve the problem without the need for a GUI.
+    Required to get the path to the input data file
+
+    :param dir: path to input data file
+    :type dir: str
+    :return: object carries the solution of the problem (if exists)
+    :rtype: BoardResolver
+    """
     hints = HintsData()
     hints.getData(dir)
     prob = BoardResolver(hints)
